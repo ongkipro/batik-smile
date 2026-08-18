@@ -57,6 +57,7 @@ export interface CartState {
 }
 
 const CART_ID_KEY = 'batik_smile_cart_id';
+const CART_STATE_KEY = 'batik_smile_cart_state';
 
 class CartManager {
   private state: CartState = {
@@ -77,7 +78,24 @@ class CartManager {
 
   constructor() {
     if (typeof window !== 'undefined') {
+      this.restoreCachedState();
       this.initCart();
+    }
+  }
+
+  private restoreCachedState() {
+    try {
+      const cached = localStorage.getItem(CART_STATE_KEY);
+      if (cached) {
+        const parsed = JSON.parse(cached);
+        this.state = {
+          ...this.state,
+          ...parsed,
+          isLoading: false
+        };
+      }
+    } catch (e) {
+      console.warn('Failed to parse cached cart state:', e);
     }
   }
 
@@ -100,7 +118,11 @@ class CartManager {
     return { ...this.state };
   }
 
-  public async fetchCart() {
+  public init() {
+    return this.initCart();
+  }
+
+  public fetchCart() {
     return this.initCart();
   }
 
@@ -119,7 +141,7 @@ class CartManager {
     this.emit();
   }
 
-  private async initCart() {
+  public async initCart() {
     if (typeof window === 'undefined') return;
 
     const savedCartId = localStorage.getItem(CART_ID_KEY);
@@ -142,16 +164,14 @@ class CartManager {
         this.updateStateFromCart(body.data.cart);
       } else {
         localStorage.removeItem(CART_ID_KEY);
+        localStorage.removeItem(CART_STATE_KEY);
         this.state.id = null;
         this.state.lines = [];
         this.state.totalQuantity = 0;
+        this.state.checkoutUrl = null;
       }
     } catch (e) {
-      console.error('Failed to restore cart:', e);
-      localStorage.removeItem(CART_ID_KEY);
-      this.state.id = null;
-      this.state.lines = [];
-      this.state.totalQuantity = 0;
+      console.error('Failed to restore cart from Shopify:', e);
     } finally {
       this.state.isLoading = false;
       this.emit();
@@ -170,8 +190,18 @@ class CartManager {
     };
     this.state.lines = (cart.lines?.edges || []).map((e: any) => e.node);
 
-    if (cart.id && typeof window !== 'undefined') {
-      localStorage.setItem(CART_ID_KEY, cart.id);
+    if (typeof window !== 'undefined') {
+      if (cart.id) {
+        localStorage.setItem(CART_ID_KEY, cart.id);
+        localStorage.setItem(CART_STATE_KEY, JSON.stringify({
+          id: this.state.id,
+          checkoutUrl: this.state.checkoutUrl,
+          totalQuantity: this.state.totalQuantity,
+          note: this.state.note,
+          cost: this.state.cost,
+          lines: this.state.lines
+        }));
+      }
     }
   }
 
@@ -259,6 +289,10 @@ class CartManager {
     }
   }
 
+  public updateLine(lineId: string, quantity: number) {
+    return this.updateQuantity(lineId, quantity);
+  }
+
   public async removeItem(lineId: string) {
     if (!this.state.id) return;
     this.state.isLoading = true;
@@ -284,6 +318,10 @@ class CartManager {
     }
   }
 
+  public removeLine(lineId: string) {
+    return this.removeItem(lineId);
+  }
+
   public async updateNote(note: string) {
     if (!this.state.id) return;
     try {
@@ -296,6 +334,14 @@ class CartManager {
       });
       if (body?.data?.cartNoteUpdate?.cart) {
         this.state.note = note;
+        if (typeof window !== 'undefined') {
+          const cached = localStorage.getItem(CART_STATE_KEY);
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            parsed.note = note;
+            localStorage.setItem(CART_STATE_KEY, JSON.stringify(parsed));
+          }
+        }
         this.emit();
       }
     } catch (error) {

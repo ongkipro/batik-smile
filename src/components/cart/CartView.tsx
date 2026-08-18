@@ -10,6 +10,8 @@ export default function CartView() {
 
   useEffect(() => {
     setIsClient(true);
+    
+    // Subscribe to store updates
     const unsubscribe = cartStore.subscribe((state) => {
       setCartState({ ...state });
       if (state.note !== undefined && state.note !== null) {
@@ -17,10 +19,21 @@ export default function CartView() {
       }
     });
 
-    // Inisialisasi awal
+    // Listen to custom window events for cross-component sync
+    const handleCartEvent = (e: CustomEvent<CartState>) => {
+      if (e.detail) {
+        setCartState({ ...e.detail });
+      }
+    };
+    window.addEventListener('batik-smile:cart-updated', handleCartEvent as EventListener);
+
+    // Trigger initial background sync
     cartStore.init();
 
-    return () => unsubscribe();
+    return () => {
+      unsubscribe();
+      window.removeEventListener('batik-smile:cart-updated', handleCartEvent as EventListener);
+    };
   }, []);
 
   const handleQuantityChange = async (lineId: string, currentQty: number, delta: number) => {
@@ -28,12 +41,12 @@ export default function CartView() {
     setUpdatingLineId(lineId);
     try {
       if (nextQty <= 0) {
-        await cartStore.removeLine(lineId);
+        await cartStore.removeItem(lineId);
       } else {
-        await cartStore.updateLine(lineId, nextQty);
+        await cartStore.updateQuantity(lineId, nextQty);
       }
     } catch (e) {
-      console.error("Gagal mengubah jumlah item:", e);
+      console.error("Gagal mengubah kuantitas:", e);
     } finally {
       setUpdatingLineId(null);
     }
@@ -42,9 +55,9 @@ export default function CartView() {
   const handleRemove = async (lineId: string) => {
     setUpdatingLineId(lineId);
     try {
-      await cartStore.removeLine(lineId);
+      await cartStore.removeItem(lineId);
     } catch (e) {
-      console.error("Gagal menghapus item:", e);
+      console.error("Gagal menghapus produk:", e);
     } finally {
       setUpdatingLineId(null);
     }
@@ -56,7 +69,7 @@ export default function CartView() {
     try {
       await cartStore.updateNote(note);
     } catch (e) {
-      console.error("Gagal menyimpan catatan pesanan:", e);
+      console.error("Gagal menyimpan catatan:", e);
     } finally {
       setIsUpdatingNote(false);
     }
@@ -80,6 +93,16 @@ export default function CartView() {
   const freeShippingThreshold = 500000;
   const remainingForFreeShipping = Math.max(0, freeShippingThreshold - rawSubtotal);
   const progressPercent = Math.min(100, Math.round((rawSubtotal / freeShippingThreshold) * 100));
+
+  // Show loading spinner if actively fetching and no items yet
+  if (cartState.isLoading && lines.length === 0) {
+    return (
+      <div className="py-20 text-center">
+        <div className="inline-block animate-spin w-8 h-8 border-3 border-[#9E4719] border-t-transparent rounded-full mb-3" />
+        <p className="font-sans text-sm text-[#404040]">Memuat tas belanja Anda...</p>
+      </div>
+    );
+  }
 
   if (lines.length === 0) {
     return (
