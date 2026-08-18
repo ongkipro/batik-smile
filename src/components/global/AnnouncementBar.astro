@@ -1,0 +1,41 @@
+---
+// src/components/global/AnnouncementBar.astro
+---
+
+<div class="w-full bg-[#121212] text-[#FAF7F2] text-[11px] sm:text-xs py-2.5 px-4 border-b border-white/10 relative z-50 overflow-hidden">
+  
+  <div class="max-w-7xl mx-auto flex items-center justify-between relative z-10">
+    
+    <!-- Left: Boutique City & Heritage with Batik Icon -->
+    <div class="hidden md:flex items-center gap-2 text-[10px] tracking-[0.22em] uppercase text-[#C5A059] font-medium">
+      <!-- Mini Kawung Ornament -->
+      <svg class="w-3.5 h-3.5 text-[#C5A059] animate-pulse" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <rect x="9" y="9" width="6" height="6" transform="rotate(45 12 12)" fill="#C5A059" fillOpacity="0.3" />
+        <circle cx="12" cy="12" r="1.5" fill="#C5A059" />
+      </svg>
+      <span>Semarang & Solo Heritage • Sejak 2007</span>
+    </div>
+
+    <!-- Center: Main Message -->
+    <div class="flex-1 text-center font-sans tracking-[0.06em] font-light text-xs">
+      <span>Jahit Kustom & Seragam Keluarga Pas di Badan Tanpa Minimal Order.</span>
+      <a 
+        href="https://wa.me/6281390888809?text=Halo%20Batik%20Smile,%20saya%20ingin%20konsultasi%20jahit%20kustom" 
+        target="_blank"
+        rel="noopener noreferrer"
+        class="ml-2 font-semibold text-[#C5A059] hover:text-white underline underline-offset-4 transition-colors inline-flex items-center gap-1"
+      >
+        Konsultasi WA →
+      </a>
+    </div>
+
+    <!-- Right: Service Tag with Batik Icon -->
+    <div class="hidden md:flex items-center gap-2 text-[10px] tracking-[0.18em] uppercase text-white/60">
+      <span>Layanan 3S 1C 1T 1H</span>
+      <svg class="w-3 h-3 text-[#C5A059]" viewBox="0 0 24 24" fill="currentColor">
+        <circle cx="12" cy="12" r="2"/>
+      </svg>
+    </div>
+
+  </div>
+</div>

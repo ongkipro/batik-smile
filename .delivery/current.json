@@ -1,0 +1,14 @@
+{
+  "activeRun": null,
+  "lastRun": {
+    "finishedAt": "2026-08-18T16:59:45Z",
+    "result": "FAIL",
+    "runId": "RUN-20260818T165945Z-7e8ec472"
+  },
+  "observedHead": null,
+  "observedState": "PLANNED",
+  "project": "batik-smile",
+  "schemaVersion": 1,
+  "statusAuthority": "STATUS.md",
+  "updatedAt": "2026-08-18T16:59:45Z"
+}

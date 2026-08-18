@@ -1,0 +1,40 @@
+---
+// src/components/ui/BatikCorner.astro
+interface Props {
+  position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
+  variant?: 'gold' | 'bronze' | 'light' | 'dark';
+  className?: string;
+  size?: number;
+}
+
+const { position = 'top-left', variant = 'gold', className = '', size = 32 } = Astro.props;
+
+const color = variant === 'gold' 
+  ? '#C5A059' 
+  : variant === 'bronze' 
+    ? '#9E4719' 
+    : variant === 'light' 
+      ? '#FAF7F2' 
+      : '#161616';
+
+const rotationClass = position === 'top-left' 
+  ? '' 
+  : position === 'top-right' 
+    ? 'rotate-90' 
+    : position === 'bottom-right' 
+      ? 'rotate-180' 
+      : '-rotate-90';
+---
+
+<div class={`pointer-events-none opacity-60 ${rotationClass} ${className}`}>
+  <svg width={size} height={size} viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Corner Border Lines -->
+    <path d="M1 31V8C1 4.13401 4.13401 1 8 1H31" stroke={color} strokeWidth="1.2" strokeLinecap="round" />
+    <path d="M5 31V10C5 7.23858 7.23858 5 10 5H31" stroke={color} strokeWidth="0.8" strokeOpacity="0.5" strokeLinecap="round" />
+    
+    <!-- Traditional Floral/Kawung Flourish -->
+    <circle cx="10" cy="10" r="2.5" fill={color} fillOpacity="0.4" stroke={color} strokeWidth="0.8" />
+    <path d="M10 12.5C10 16 12 18 16 18C12 18 12 22 12 24" stroke={color} strokeWidth="0.8" strokeLinecap="round" />
+    <path d="M12.5 10C16 10 18 12 18 16C18 12 22 12 24 12" stroke={color} strokeWidth="0.8" strokeLinecap="round" />
+  </svg>
+</div>

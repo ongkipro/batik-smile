@@ -1,0 +1,40 @@
+---
+// src/components/ui/BatikDivider.astro
+interface Props {
+  variant?: 'gold' | 'bronze' | 'light' | 'dark';
+  className?: string;
+}
+
+const { variant = 'gold', className = '' } = Astro.props;
+
+const color = variant === 'gold' 
+  ? '#C5A059' 
+  : variant === 'bronze' 
+    ? '#9E4719' 
+    : variant === 'light' 
+      ? '#FAF7F2' 
+      : '#161616';
+---
+
+<div class={`flex items-center justify-center gap-3 my-4 opacity-80 ${className}`}>
+  <!-- Left Filigree Line -->
+  <div class="h-[1px] w-12 sm:w-20 bg-gradient-to-r from-transparent to-current opacity-40"></div>
+  
+  <!-- Central Batik Kawung / Truntum Motif -->
+  <svg class="w-6 h-6 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.2">
+    <!-- Center Diamond -->
+    <rect x="9" y="9" width="6" height="6" transform="rotate(45 12 12)" fill={color} fillOpacity="0.15" />
+    
+    <!-- 4 Kawung Petals -->
+    <path d="M12 3C10 7 10 9 12 12C14 9 14 7 12 3Z" fill={color} fillOpacity="0.3"/>
+    <path d="M12 21C10 17 10 15 12 12C14 15 14 17 12 21Z" fill={color} fillOpacity="0.3"/>
+    <path d="M3 12C7 10 9 10 12 12C9 14 7 14 3 12Z" fill={color} fillOpacity="0.3"/>
+    <path d="M21 12C17 10 15 10 12 12C15 14 17 14 21 12Z" fill={color} fillOpacity="0.3"/>
+    
+    <!-- Corner Dots -->
+    <circle cx="12" cy="12" r="1.5" fill={color} />
+  </svg>
+
+  <!-- Right Filigree Line -->
+  <div class="h-[1px] w-12 sm:w-20 bg-gradient-to-l from-transparent to-current opacity-40"></div>
+</div>

@@ -1,0 +1,80 @@
+---
+// src/components/ui/ProductCard.astro
+interface Props {
+  title: string;
+  price: string;
+  compareAtPrice?: string;
+  image: string;
+  material?: string;
+  badge?: string;
+  href: string;
+  variant?: 'mahakarya' | 'signature' | 'essential';
+}
+
+const { title, price, compareAtPrice, image, material, badge, href, variant = 'essential' } = Astro.props;
+
+// Dynamic Styling based on Variant (3-Tier Engine)
+const cardBg = variant === 'mahakarya' ? 'bg-transparent' : variant === 'signature' ? 'bg-white/5 backdrop-blur-sm' : 'bg-transparent';
+const titleColor = variant === 'mahakarya' ? 'text-[#FAF7F2]' : 'text-[#121212]';
+const priceColor = variant === 'mahakarya' ? 'text-[#C5A059]' : 'text-[#9E4719]';
+const strikeColor = variant === 'mahakarya' ? 'text-white/40' : 'text-[#8C827A]';
+
+const hasDiscount = compareAtPrice && compareAtPrice !== price;
+---
+
+<a href={href} class={`group block ${cardBg}`}>
+  <!-- Image Container 4:5 Ratio -->
+  <div class="relative w-full aspect-[4/5] overflow-hidden bg-[#161616]/5 mb-3.5 rounded-2xl border border-[#161616]/10 shadow-sm">
+    
+    <!-- Discount / Variant Badge -->
+    {badge ? (
+      <div class="absolute top-3 left-3 z-10 bg-[#9E4719] text-white text-[9px] uppercase tracking-widest font-bold px-2.5 py-1 rounded shadow-md">
+        {badge}
+      </div>
+    ) : hasDiscount && (
+      <div class="absolute top-3 left-3 z-10 bg-[#9E4719] text-white text-[9px] uppercase tracking-widest font-bold px-2.5 py-1 rounded shadow-md">
+        Diskon
+      </div>
+    )}
+
+    <img 
+      src={image} 
+      alt={title} 
+      loading="lazy"
+      class="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+    />
+    
+    <!-- Quick View Overlay on Hover (Desktop) -->
+    <div class="absolute bottom-0 left-0 w-full p-3.5 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hidden lg:block">
+      <span class="block w-full text-center bg-[#FAF7F2]/95 backdrop-blur text-[#121212] text-[11px] uppercase tracking-widest font-bold py-2.5 shadow-lg hover:bg-[#9E4719] hover:text-white transition-colors rounded-xl">
+        Lihat Detail Karya
+      </span>
+    </div>
+  </div>
+
+  <!-- Info Container with Razor-Sharp Typography Hierarchy -->
+  <div class="flex flex-col items-center text-center px-1">
+    {material && (
+      <span class="font-sans text-[9px] uppercase tracking-[0.22em] text-[#9E4719] font-bold mb-1.5 block">
+        {material}
+      </span>
+    )}
+    
+    <!-- Judul Produk: Sans-Serif Medium, Kontras Tinggi, Line Height 1.4, Bebas Tumpang Tindih -->
+    <h3 class={`font-sans text-[13px] sm:text-[14px] font-medium leading-[1.4] line-clamp-2 min-h-[2.8em] mb-2 group-hover:text-[#9E4719] transition-colors ${titleColor}`}>
+      {title}
+    </h3>
+    
+    <!-- Harga Produk: Jelas, Tegas, Berbeda Bobot dari Judul -->
+    <div class="flex items-center justify-center gap-2 mt-auto">
+      {hasDiscount && (
+        <span class={`font-sans text-xs line-through font-normal ${strikeColor}`}>
+          {compareAtPrice}
+        </span>
+      )}
+      <p class={`font-sans text-[14px] sm:text-[15px] font-bold tracking-tight ${priceColor}`}>
+        {price}
+      </p>
+    </div>
+  </div>
+</a>

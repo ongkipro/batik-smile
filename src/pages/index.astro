@@ -1,0 +1,386 @@
+---
+// src/pages/index.astro
+import Layout from '../layouts/Layout.astro';
+import HeroSlider from '../components/home/HeroSlider.tsx';
+import ProductCard from '../components/ui/ProductCard.astro';
+import BatikDivider from '../components/ui/BatikDivider.astro';
+import BatikCorner from '../components/ui/BatikCorner.astro';
+import BatikPatternStrip from '../components/ui/BatikPatternStrip.astro';
+import { shopifyFetch, getProductsQuery } from '../lib/shopify';
+
+// Ambil 12 produk unggulan dari Shopify Storefront API
+let products: any[] = [];
+try {
+  const { body } = await shopifyFetch({
+    query: getProductsQuery,
+    variables: { first: 12 },
+  });
+  products = (body as any)?.data?.products?.edges?.map((edge: any) => edge.node) || [];
+} catch (error) {
+  console.error("Gagal menarik data dari Shopify:", error);
+}
+---
+
+<Layout title="Batik Smile Nusantara | Mahakarya Sarimbit & Busana Batik Sejak 2007">
+  
+  <!-- 1. HERO SECTION (Couture Editorial Cross-Fade Slider) -->
+  <HeroSlider client:load />
+
+  <!-- Subtle Batik Motif Strip Border -->
+  <BatikPatternStrip variant="gold" className="my-2" />
+
+  <!-- 2. BRAND PROLOGUE (Filosofi & Nilai Luhur) -->
+  <section class="py-20 lg:py-28 bg-[#FAF7F2] text-[#121212] relative border-b border-[#161616]/10">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+      
+      <!-- Gold Seal Ornament -->
+      <div class="inline-flex items-center justify-center w-12 h-12 rounded-full border border-[#C5A059]/40 bg-[#C5A059]/10 text-[#9E4719] mb-4 shadow-sm">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+          <path d="M2 12h20" />
+        </svg>
+      </div>
+
+      <span class="text-[#9E4719] font-sans text-xs uppercase tracking-[0.3em] font-bold mb-3 block">
+        Tradisi & Jiwa Nusantara • Sejak 2007
+      </span>
+      
+      <h2 class="font-serif text-3xl sm:text-5xl lg:text-6xl font-normal leading-[1.2] mb-4 text-[#121212]">
+        "Setiap helai kain adalah doa dan kehormatan keluarga yang ditenun dengan ketulusan hati."
+      </h2>
+
+      <!-- Authentic Batik Kawung Divider -->
+      <BatikDivider variant="bronze" className="my-6" />
+      
+      <p class="font-sans text-sm sm:text-base text-[#3E3E3E] leading-[1.7] max-w-2xl mx-auto font-light mb-8">
+        Batik Smile didirikan di Semarang berlandaskan komitmen melestarikan keagungan motif keraton dan pesisiran. Kami menghadirkan sarimbit keluarga 3 kasta, busana siap pakai, dan layanan jahit kustom tanpa minimal order dengan standar pelayanan <strong>3S 1C 1T 1H</strong> (Senyum, Salam, Sapa, Cepat, Tanggap, dan Hati).
+      </p>
+
+      <div class="flex items-center justify-center gap-6 text-xs uppercase tracking-[0.2em] text-[#9E4719] font-bold">
+        <span>Semarang</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#C5A059]"></span>
+        <span>Solo</span>
+        <span class="w-1.5 h-1.5 rounded-full bg-[#C5A059]"></span>
+        <span>Nusantara</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. TIERED SARIMBIT LOOKBOOK (3 Kasta Sarimbit) -->
+  <section class="py-20 lg:py-28 bg-[#121212] text-[#FAF7F2] relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6 pb-6 border-b border-white/10">
+        <div>
+          <span class="text-[#C5A059] font-sans text-xs uppercase tracking-[0.3em] font-bold mb-2 block">
+            Kasta Sarimbit Pasangan & Keluarga
+          </span>
+          <h2 class="font-serif text-4xl lg:text-6xl font-normal text-white tracking-tight leading-[1.15]">
+            Tiga Mahakarya Selaras
+          </h2>
+        </div>
+        <a 
+          href="/collections/sarimbit-batik-couple" 
+          class="group font-sans text-xs uppercase tracking-[0.22em] text-[#C5A059] hover:text-white transition-colors flex items-center gap-2 font-bold"
+        >
+          Lihat Semua Sarimbit
+          <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <!-- 3 Tier Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-8">
+        
+        <!-- Tier 1: Mahakarya Heritage -->
+        <a 
+          href="/collections/sarimbit-mahakarya-heritage" 
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-black border border-white/15 flex flex-col justify-end p-7 sm:p-9 shadow-2xl transition-transform duration-500 hover:-translate-y-1"
+        >
+          <!-- Luxury Batik Corner -->
+          <BatikCorner position="top-right" variant="gold" className="absolute top-4 right-4" size={32} />
+
+          <img 
+            src="https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_couple_1785995932731_51f1e349-35df-4896-b08d-6290f84897d9.jpg?v=1786005734" 
+            class="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700" 
+            alt="Sarimbit Mahakarya Heritage" 
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/45 to-transparent"></div>
+          
+          <div class="relative z-10">
+            <span class="text-[#C5A059] font-sans font-bold text-[9px] tracking-[0.25em] uppercase mb-2.5 inline-block px-3 py-1 bg-black/70 border border-[#C5A059]/40 backdrop-blur-md rounded">
+              Tier 1 • Sutra Prada
+            </span>
+            <h3 class="font-serif text-3xl sm:text-4xl text-white mb-2 leading-[1.2]">Mahakarya Heritage</h3>
+            <p class="font-sans text-xs sm:text-sm text-white/80 leading-[1.6] mb-4 font-light">
+              Kemewahan sutra ATBM eksklusif dengan aksen prada emas murni untuk momen sakral resepsi keluarga.
+            </p>
+            <span class="inline-flex items-center text-xs font-sans text-[#C5A059] uppercase tracking-widest font-bold group-hover:translate-x-1 transition-transform">
+              Eksplorasi Mahakarya →
+            </span>
+          </div>
+        </a>
+
+        <!-- Tier 2: Signature Elegance -->
+        <a 
+          href="/collections/sarimbit-signature-elegance" 
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#0F172A] border border-blue-400/25 flex flex-col justify-end p-7 sm:p-9 shadow-2xl transition-transform duration-500 hover:-translate-y-1"
+        >
+          <!-- Luxury Batik Corner -->
+          <BatikCorner position="top-right" variant="light" className="absolute top-4 right-4" size={32} />
+
+          <img 
+            src="https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_couple_1785995932731_d8691b10-ece8-4430-a8c6-d184fa0c467a.jpg?v=1786004716" 
+            class="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700" 
+            alt="Sarimbit Signature Elegance" 
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-[#0F172A]/50 to-transparent"></div>
+          
+          <div class="relative z-10">
+            <span class="text-[#93C5FD] font-sans font-bold text-[9px] tracking-[0.25em] uppercase mb-2.5 inline-block px-3 py-1 bg-slate-950/70 border border-blue-400/40 backdrop-blur-md rounded">
+              Tier 2 • Tenun Dobby
+            </span>
+            <h3 class="font-serif text-3xl sm:text-4xl text-white mb-2 leading-[1.2]">Signature Elegance</h3>
+            <p class="font-sans text-xs sm:text-sm text-white/80 leading-[1.6] mb-4 font-light">
+              Kombinasi tekstur dobby modern dan tarum navy berwibawa dengan furing hero halus.
+            </p>
+            <span class="inline-flex items-center text-xs font-sans text-[#93C5FD] uppercase tracking-widest font-bold group-hover:translate-x-1 transition-transform">
+              Lihat Signature →
+            </span>
+          </div>
+        </a>
+
+        <!-- Tier 3: Essential Daily -->
+        <a 
+          href="/collections/sarimbit-essential-daily" 
+          class="group relative aspect-[3/4] overflow-hidden rounded-2xl bg-[#1E1B18] border border-amber-500/25 flex flex-col justify-end p-7 sm:p-9 shadow-2xl transition-transform duration-500 hover:-translate-y-1"
+        >
+          <!-- Luxury Batik Corner -->
+          <BatikCorner position="top-right" variant="gold" className="absolute top-4 right-4" size={32} />
+
+          <img 
+            src="https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_couple_1785995932731_7d17a644-177e-4489-bcf6-490c3c74d39f.jpg?v=1786005749" 
+            class="absolute inset-0 w-full h-full object-cover opacity-55 group-hover:opacity-75 group-hover:scale-105 transition-all duration-700" 
+            alt="Sarimbit Essential Daily" 
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+          
+          <div class="relative z-10">
+            <span class="text-[#F59E0B] font-sans font-bold text-[9px] tracking-[0.25em] uppercase mb-2.5 inline-block px-3 py-1 bg-black/70 border border-amber-500/40 backdrop-blur-md rounded">
+              Tier 3 • Katun Halus
+            </span>
+            <h3 class="font-serif text-3xl sm:text-4xl text-white mb-2 leading-[1.2]">Essential Daily</h3>
+            <p class="font-sans text-xs sm:text-sm text-white/80 leading-[1.6] mb-4 font-light">
+              Sarimbit katun primisima yang sejuk, praktis, dan ramah untuk seluruh anggota keluarga.
+            </p>
+            <span class="inline-flex items-center text-xs font-sans text-[#F59E0B] uppercase tracking-widest font-bold group-hover:translate-x-1 transition-transform">
+              Jelajahi Essential →
+            </span>
+          </div>
+        </a>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4. LORONG CORAK (Catalog Grid Explorer) -->
+  <section class="py-20 lg:py-28 bg-[#FAF7F2] text-[#121212] relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-[#9E4719] font-sans text-xs uppercase tracking-[0.3em] font-bold mb-2 block">
+          Eksplorasi Galeri
+        </span>
+        <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl mb-2 font-normal leading-[1.15]">
+          Lorong Corak Busana Pilihan
+        </h2>
+        
+        <!-- Center Batik Divider -->
+        <BatikDivider variant="bronze" className="my-4" />
+
+        <p class="font-sans text-xs sm:text-sm text-[#3E3E3E] leading-[1.6] font-light">
+          Kurasi karya busana batik wanita, pria, anak-anak, dan kain tulis pilihan siap pakai langsung dari pengrajin.
+        </p>
+      </div>
+
+      <!-- Grid Produk Live dari Shopify Menggunakan ProductCard Berstandar Tinggi -->
+      <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-7">
+        {products.length > 0 ? (
+          products.map((product: any) => {
+            const imageUrl = product.images?.edges?.[0]?.node?.url || "https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_shop_all_1786007684766.jpg?v=1786007711";
+            const minPrice = parseInt(product.priceRange?.minVariantPrice?.amount || "0");
+            const comparePrice = parseInt(product.compareAtPriceRange?.maxVariantPrice?.amount || "0");
+            const priceStr = `Rp ${minPrice.toLocaleString('id-ID')}`;
+            const comparePriceStr = comparePrice > minPrice ? `Rp ${comparePrice.toLocaleString('id-ID')}` : undefined;
+            
+            const tags = (product.tags || []).join(' ').toLowerCase();
+            const materialTag = tags.includes('sutra') ? 'Sutra Prada' : tags.includes('dobby') ? 'Tenun Dobby' : tags.includes('katun') ? 'Katun Primisima' : 'Batik Nusantara';
+            
+            return (
+              <ProductCard 
+                title={product.title}
+                price={priceStr}
+                compareAtPrice={comparePriceStr}
+                image={imageUrl}
+                href={`/products/${product.handle}`}
+                material={materialTag}
+                variant="essential"
+              />
+            );
+          })
+        ) : (
+          <div class="col-span-full py-16 text-center text-[#121212]/50">
+            Sedang memuat karya...
+          </div>
+        )}
+      </div>
+      
+      <!-- Tombol Lihat Seluruh Karya -->
+      <div class="mt-16 text-center">
+        <a 
+          href="/collections/shop" 
+          class="inline-flex items-center justify-center px-9 py-4 border-2 border-[#121212] hover:border-[#9E4719] hover:bg-[#9E4719] hover:text-white text-[#121212] font-sans text-xs uppercase tracking-[0.22em] font-bold transition-all duration-300 shadow-sm rounded-xl"
+        >
+          Lihat Seluruh Karya Katalog
+          <svg class="ml-2.5 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 5. PRIVATE ATELIER & JAHIT KUSTOM (3S 1C 1T 1H) -->
+  <section class="py-20 lg:py-28 bg-[#141414] text-[#FAF7F2] relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        
+        <div class="aspect-[4/5] relative rounded-3xl overflow-hidden shadow-2xl border border-white/10">
+          <BatikCorner position="top-left" variant="gold" className="absolute top-4 left-4 z-10" size={36} />
+          
+          <img 
+            src="https://cdn.shopify.com/s/files/1/0813/3224/0441/files/img_1_dd63c71d-9907-469a-b3d1-027d795baafa.jpg?v=1787039568" 
+            class="w-full h-full object-cover" 
+            alt="Pengrajin Batik Smile" 
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent"></div>
+          <div class="absolute bottom-7 left-7 right-7">
+            <span class="text-[#C5A059] font-sans text-xs uppercase tracking-[0.25em] font-bold block mb-1">
+              Handcrafted in Solo & Semarang
+            </span>
+            <p class="font-serif text-2xl text-white font-normal leading-[1.3]">
+              Dedikasi canting malam dan ketelitian jahitan butik profesional.
+            </p>
+          </div>
+        </div>
+
+        <div class="space-y-6">
+          <span class="text-[#C5A059] text-xs tracking-[0.3em] uppercase font-bold block">
+            Private Atelier & Custom Tailoring
+          </span>
+          <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-normal text-white leading-[1.15]">
+            Jahit Kustom & Seragam Keluarga <br/>
+            <span class="italic text-[#C5A059]">Tanpa Minimal Order</span>
+          </h2>
+          
+          <p class="font-sans text-sm text-white/85 leading-[1.7] font-light">
+            Ingin seragam keluarga untuk pernikahan, wisuda, atau hari raya dengan ukuran kustom pas di badan? Tim penjahit ahli kami siap mewujudkan busana impian Anda tanpa batasan jumlah pesanan.
+          </p>
+
+          <!-- 3S 1C 1T 1H Pillars -->
+          <div class="grid grid-cols-2 gap-4 pt-3 border-t border-white/10">
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+              <span class="font-serif text-lg text-[#C5A059] font-semibold block mb-0.5">3S</span>
+              <span class="font-sans text-xs text-white/90 font-medium">Senyum, Salam, Sapa</span>
+            </div>
+            <div class="p-4 rounded-xl bg-white/5 border border-white/10">
+              <span class="font-serif text-lg text-[#C5A059] font-semibold block mb-0.5">1C 1T 1H</span>
+              <span class="font-sans text-xs text-white/90 font-medium">Cepat, Tanggap, Sepenuh Hati</span>
+            </div>
+          </div>
+
+          <div class="pt-3">
+            <a 
+              href="https://wa.me/6281390888809?text=Halo%20Batik%20Smile,%20saya%20ingin%20konsultasi%20jahit%20seragam%20keluarga%20custom" 
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inline-flex items-center justify-center px-8 py-4 bg-[#9E4719] hover:bg-[#7A320C] text-white font-sans text-xs uppercase tracking-[0.22em] font-bold rounded-xl transition-all duration-300 shadow-xl"
+            >
+              Konsultasi Jahit via WhatsApp
+              <svg class="ml-2.5 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. O2O SHOWROOM 3 LANTAI (Semarang Experience) -->
+  <section class="py-20 lg:py-28 bg-[#FAF7F2] text-[#121212] border-t border-[#161616]/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-[#9E4719] font-sans text-xs uppercase tracking-[0.3em] font-bold mb-2 block">
+          Online to Offline (O2O)
+        </span>
+        <h2 class="font-serif text-4xl sm:text-5xl lg:text-6xl mb-2 font-normal leading-[1.15]">
+          Pengalaman Showroom 3 Lantai
+        </h2>
+        
+        <BatikDivider variant="bronze" className="my-4" />
+
+        <p class="font-sans text-xs sm:text-sm text-[#3E3E3E] leading-[1.6] font-light">
+          Kunjungi galeri fisik kami di Semarang untuk merasakan langsung kelembutan kain dan fitting busana bersama keluarga.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <div class="p-8 rounded-3xl bg-white border border-[#161616]/10 shadow-sm text-center space-y-3 relative overflow-hidden">
+          <BatikCorner position="top-left" variant="bronze" className="absolute top-3 left-3 opacity-40" size={24} />
+          <div class="w-12 h-12 rounded-full bg-[#9E4719]/10 text-[#9E4719] font-serif text-xl font-bold flex items-center justify-center mx-auto">
+            1
+          </div>
+          <h3 class="font-serif text-2xl text-[#121212]">Lantai 1: Ready-to-Wear</h3>
+          <p class="font-sans text-xs sm:text-sm text-[#3E3E3E] leading-[1.6] font-light">
+            Ratusan blus wanita, outer modern, kemeja pria furing, dan sarimbit keluarga siap pakai.
+          </p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-white border border-[#161616]/10 shadow-sm text-center space-y-3 relative overflow-hidden">
+          <BatikCorner position="top-left" variant="gold" className="absolute top-3 left-3 opacity-50" size={24} />
+          <div class="w-12 h-12 rounded-full bg-[#C5A059]/20 text-[#C5A059] font-serif text-xl font-bold flex items-center justify-center mx-auto">
+            2
+          </div>
+          <h3 class="font-serif text-2xl text-[#121212]">Lantai 2: Kain & Sutra</h3>
+          <p class="font-sans text-xs sm:text-sm text-[#3E3E3E] leading-[1.6] font-light">
+            Galeri kain batik tulis primisima, tenun Troso, sutra Solo, dan layanan konsultasi jahit kustom.
+          </p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-white border border-[#161616]/10 shadow-sm text-center space-y-3 relative overflow-hidden">
+          <BatikCorner position="top-left" variant="bronze" className="absolute top-3 left-3 opacity-40" size={24} />
+          <div class="w-12 h-12 rounded-full bg-[#9E4719]/10 text-[#9E4719] font-serif text-xl font-bold flex items-center justify-center mx-auto">
+            3
+          </div>
+          <h3 class="font-serif text-2xl text-[#121212]">Lantai 3: Oleh-Oleh & Craft</h3>
+          <p class="font-sans text-xs sm:text-sm text-[#3E3E3E] leading-[1.6] font-light">
+            Kerajinan etnik, blangkon khas Semarang, tas batik, dan souvenir khas Jawa Tengah.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+</Layout>

@@ -1,0 +1,30 @@
+---
+// src/components/ui/BatikPatternStrip.astro
+interface Props {
+  variant?: 'gold' | 'bronze' | 'light' | 'dark';
+  className?: string;
+}
+
+const { variant = 'gold', className = '' } = Astro.props;
+
+const color = variant === 'gold' 
+  ? '#C5A059' 
+  : variant === 'bronze' 
+    ? '#9E4719' 
+    : variant === 'light' 
+      ? '#FAF7F2' 
+      : '#161616';
+---
+
+<div class={`w-full overflow-hidden flex items-center justify-center opacity-40 select-none pointer-events-none py-1 ${className}`}>
+  <div class="flex gap-4 sm:gap-6 min-w-full justify-center">
+    {[...Array(12)].map(() => (
+      <svg class="w-8 h-4 flex-shrink-0" viewBox="0 0 32 16" fill="none">
+        <path d="M16 1C12 5 12 11 16 15C20 11 20 5 16 1Z" stroke={color} strokeWidth="1" fill={color} fillOpacity="0.15" />
+        <path d="M1 8C5 6 11 6 15 8C11 10 5 10 1 8Z" stroke={color} strokeWidth="0.8" />
+        <path d="M31 8C27 6 21 6 17 8C21 10 27 10 31 8Z" stroke={color} strokeWidth="0.8" />
+        <circle cx="16" cy="8" r="1.5" fill={color} />
+      </svg>
+    ))}
+  </div>
+</div>
