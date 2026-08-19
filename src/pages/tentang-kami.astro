@@ -1,6 +1,7 @@
 ---
 // src/pages/tentang-kami.astro
 import Layout from '../layouts/Layout.astro';
+import { Smile, Handshake, MessageSquare, Zap, Target, Heart } from 'lucide-astro';
 ---
 
 <Layout title="Tentang Kami | Batik Smile Nusantara Sejak 2007">
@@ -79,29 +80,29 @@ import Layout from '../layouts/Layout.astro';
         </p>
 
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 text-center">
-          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span class="text-xl block mb-1">😊</span>
-            <span class="font-sans text-xs font-semibold text-[#C5A059]">Senyum</span>
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 flex flex-col items-center justify-center">
+            <Smile class="w-6 h-6 text-[#C5A059] mb-2" />
+            <span class="font-sans text-xs font-semibold text-[#FAF7F2]">Senyum</span>
           </div>
-          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span class="text-xl block mb-1">🤝</span>
-            <span class="font-sans text-xs font-semibold text-[#C5A059]">Salam</span>
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 flex flex-col items-center justify-center">
+            <Handshake class="w-6 h-6 text-[#C5A059] mb-2" />
+            <span class="font-sans text-xs font-semibold text-[#FAF7F2]">Salam</span>
           </div>
-          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span class="text-xl block mb-1">👋</span>
-            <span class="font-sans text-xs font-semibold text-[#C5A059]">Sapa</span>
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 flex flex-col items-center justify-center">
+            <MessageSquare class="w-6 h-6 text-[#C5A059] mb-2" />
+            <span class="font-sans text-xs font-semibold text-[#FAF7F2]">Sapa</span>
           </div>
-          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span class="text-xl block mb-1">⚡</span>
-            <span class="font-sans text-xs font-semibold text-[#C5A059]">Cepat</span>
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 flex flex-col items-center justify-center">
+            <Zap class="w-6 h-6 text-[#C5A059] mb-2" />
+            <span class="font-sans text-xs font-semibold text-[#FAF7F2]">Cepat</span>
           </div>
-          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span class="text-xl block mb-1">🎯</span>
-            <span class="font-sans text-xs font-semibold text-[#C5A059]">Tanggap</span>
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 flex flex-col items-center justify-center">
+            <Target class="w-6 h-6 text-[#C5A059] mb-2" />
+            <span class="font-sans text-xs font-semibold text-[#FAF7F2]">Tanggap</span>
           </div>
-          <div class="p-3 bg-white/5 rounded-xl border border-white/10">
-            <span class="text-xl block mb-1">❤️</span>
-            <span class="font-sans text-xs font-semibold text-[#C5A059]">Sepenuh Hati</span>
+          <div class="p-4 bg-white/5 rounded-xl border border-white/10 flex flex-col items-center justify-center">
+            <Heart class="w-6 h-6 text-[#C5A059] mb-2" />
+            <span class="font-sans text-xs font-semibold text-[#FAF7F2]">Sepenuh Hati</span>
           </div>
         </div>
       </div>

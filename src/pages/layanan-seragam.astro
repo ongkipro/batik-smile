@@ -1,6 +1,7 @@
 ---
 // src/pages/layanan-seragam.astro
 import Layout from '../layouts/Layout.astro';
+import { Sparkles, Scissors, Clock, Layers } from 'lucide-astro';
 ---
 
 <Layout title="Layanan Jahit & Seragam Kustom | Batik Smile Nusantara">
@@ -22,33 +23,41 @@ import Layout from '../layouts/Layout.astro';
 
       <!-- 4 Core Advantages -->
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-        <div class="p-6 rounded-2xl bg-white border border-[#161616]/10 shadow-sm space-y-2">
-          <span class="text-2xl block">✨</span>
-          <h3 class="font-serif text-lg text-[#9E4719]">Tanpa Min. Order</h3>
+        <div class="p-6 rounded-2xl bg-white border border-[#161616]/10 shadow-sm space-y-2.5">
+          <div class="w-10 h-10 rounded-xl bg-[#9E4719]/10 flex items-center justify-center">
+            <Sparkles class="w-5 h-5 text-[#9E4719]" />
+          </div>
+          <h3 class="font-serif text-lg text-[#9E4719] font-bold">Tanpa Min. Order</h3>
           <p class="font-sans text-xs text-[#161616]/70 leading-relaxed font-light">
             Mulai dari 1 potong baju hingga ratusan set seragam lengkap siap kami layani dengan standar mutu butik yang sama.
           </p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-[#161616]/10 shadow-sm space-y-2">
-          <span class="text-2xl block">✂️</span>
-          <h3 class="font-serif text-lg text-[#9E4719]">Jahitan Presisi</h3>
+        <div class="p-6 rounded-2xl bg-white border border-[#161616]/10 shadow-sm space-y-2.5">
+          <div class="w-10 h-10 rounded-xl bg-[#9E4719]/10 flex items-center justify-center">
+            <Scissors class="w-5 h-5 text-[#9E4719]" />
+          </div>
+          <h3 class="font-serif text-lg text-[#9E4719] font-bold">Jahitan Presisi</h3>
           <p class="font-sans text-xs text-[#161616]/70 leading-relaxed font-light">
             Didukung penjahit ahli berpengalaman dengan cutting motif simetris rapi dan lapisan furing hero adem.
           </p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-[#161616]/10 shadow-sm space-y-2">
-          <span class="text-2xl block">⏱️</span>
-          <h3 class="font-serif text-lg text-[#9E4719]">Tepat Waktu</h3>
+        <div class="p-6 rounded-2xl bg-white border border-[#161616]/10 shadow-sm space-y-2.5">
+          <div class="w-10 h-10 rounded-xl bg-[#9E4719]/10 flex items-center justify-center">
+            <Clock class="w-5 h-5 text-[#9E4719]" />
+          </div>
+          <h3 class="font-serif text-lg text-[#9E4719] font-bold">Tepat Waktu</h3>
           <p class="font-sans text-xs text-[#161616]/70 leading-relaxed font-light">
             Manajemen produksi terstruktur menjamin pesanan seragam Anda selesai tepat waktu sesuai jadwal acara.
           </p>
         </div>
 
-        <div class="p-6 rounded-2xl bg-white border border-[#161616]/10 shadow-sm space-y-2">
-          <span class="text-2xl block">🧵</span>
-          <h3 class="font-serif text-lg text-[#9E4719]">Katalog Lengkap</h3>
+        <div class="p-6 rounded-2xl bg-white border border-[#161616]/10 shadow-sm space-y-2.5">
+          <div class="w-10 h-10 rounded-xl bg-[#9E4719]/10 flex items-center justify-center">
+            <Layers class="w-5 h-5 text-[#9E4719]" />
+          </div>
+          <h3 class="font-serif text-lg text-[#9E4719] font-bold">Katalog Lengkap</h3>
           <p class="font-sans text-xs text-[#161616]/70 leading-relaxed font-light">
             Pilihan bahan luas: Katun Primisima, Tenun Dobby, Lurik Etnik, Tenun Troso Jepara, Songket, hingga Sutra mewah.
           </p>

@@ -3,6 +3,7 @@
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ui/ProductCard.astro';
 import BatikDivider from '../../components/ui/BatikDivider.astro';
+import { BookOpen, Layers, Sparkles, ChevronDown, ShieldCheck, Ruler, ShoppingBag } from 'lucide-astro';
 import { shopifyFetch, getProductQuery, getProductsQuery } from '../../lib/shopify';
 
 export async function getStaticPaths() {
@@ -252,15 +253,13 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
               <details class="group rounded-2xl bg-neutral-50/80 border border-neutral-200 overflow-hidden transition-all duration-200 open:bg-white open:shadow-sm" open>
                 <summary class="flex justify-between items-center px-5 py-4 font-sans text-sm sm:text-base font-bold text-[#121212] cursor-pointer select-none group-hover:text-[#9E4719] transition-colors">
                   <span class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-full bg-[#9E4719]/10 text-[#9E4719] flex items-center justify-center text-sm font-bold">
-                      📜
+                    <span class="w-8 h-8 rounded-full bg-[#9E4719]/10 text-[#9E4719] flex items-center justify-center shadow-xs">
+                      <BookOpen class="w-4 h-4 text-[#9E4719]" />
                     </span>
                     <span>Filosofi & Detail Busana</span>
                   </span>
                   <div class="w-7 h-7 rounded-full bg-white border border-neutral-200 flex items-center justify-center text-[#9E4719] shadow-xs group-open:rotate-180 transition-transform">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                      <path d="m6 9 6 6 6-6"/>
-                    </svg>
+                    <ChevronDown class="w-4 h-4 text-[#9E4719]" />
                   </div>
                 </summary>
                 <div class="px-5 pb-5 pt-1 border-t border-neutral-100 product-prose" set:html={product.descriptionHtml} />
@@ -270,15 +269,13 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
               <details class="group rounded-2xl bg-neutral-50/80 border border-neutral-200 overflow-hidden transition-all duration-200 open:bg-white open:shadow-sm">
                 <summary class="flex justify-between items-center px-5 py-4 font-sans text-sm sm:text-base font-bold text-[#121212] cursor-pointer select-none group-hover:text-[#9E4719] transition-colors">
                   <span class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-full bg-[#C5A059]/15 text-[#9E4719] flex items-center justify-center text-sm font-bold">
-                      🧵
+                    <span class="w-8 h-8 rounded-full bg-[#C5A059]/15 text-[#9E4719] flex items-center justify-center shadow-xs">
+                      <Layers class="w-4 h-4 text-[#9E4719]" />
                     </span>
                     <span>Spesifikasi Bahan & Furing</span>
                   </span>
                   <div class="w-7 h-7 rounded-full bg-white border border-neutral-200 flex items-center justify-center text-[#9E4719] shadow-xs group-open:rotate-180 transition-transform">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                      <path d="m6 9 6 6 6-6"/>
-                    </svg>
+                    <ChevronDown class="w-4 h-4 text-[#9E4719]" />
                   </div>
                 </summary>
                 <div class="px-5 pb-5 pt-3 border-t border-neutral-100 font-sans text-sm sm:text-base leading-[1.7] text-[#333333] space-y-2.5">
@@ -305,15 +302,13 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
               <details class="group rounded-2xl bg-neutral-50/80 border border-neutral-200 overflow-hidden transition-all duration-200 open:bg-white open:shadow-sm">
                 <summary class="flex justify-between items-center px-5 py-4 font-sans text-sm sm:text-base font-bold text-[#121212] cursor-pointer select-none group-hover:text-[#9E4719] transition-colors">
                   <span class="flex items-center gap-3">
-                    <span class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center text-sm font-bold">
-                      🧼
+                    <span class="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shadow-xs">
+                      <Sparkles class="w-4 h-4 text-emerald-700" />
                     </span>
                     <span>Panduan Perawatan Batik</span>
                   </span>
                   <div class="w-7 h-7 rounded-full bg-white border border-neutral-200 flex items-center justify-center text-[#9E4719] shadow-xs group-open:rotate-180 transition-transform">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                      <path d="m6 9 6 6 6-6"/>
-                    </svg>
+                    <ChevronDown class="w-4 h-4 text-[#9E4719]" />
                   </div>
                 </summary>
                 <div class="px-5 pb-5 pt-3 border-t border-neutral-100 font-sans text-sm sm:text-base leading-[1.7] text-[#333333] space-y-2">
@@ -338,13 +333,16 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
             </div>
 
             <!-- Trust Badge (Batik Smile Semarang 2007) -->
-            <div class="p-4 rounded-2xl bg-amber-50/90 border border-amber-200 text-center">
-              <span class="font-sans text-xs sm:text-sm font-bold text-[#9E4719] block mb-1">
-                Layanan 3S 1C 1T 1H • Butik Semarang Sejak 2007
-              </span>
-              <p class="font-sans text-xs sm:text-sm text-[#404040]">
-                Garansi penukaran ukuran bila kurang pas • Showroom Pamularsih & Banyumanik Semarang
-              </p>
+            <div class="p-4 rounded-2xl bg-amber-50/90 border border-amber-200 text-center flex items-center justify-center gap-3">
+              <ShieldCheck class="w-6 h-6 text-[#9E4719] flex-shrink-0" />
+              <div class="text-left">
+                <span class="font-sans text-xs sm:text-sm font-bold text-[#9E4719] block leading-tight">
+                  Layanan 3S 1C 1T 1H • Butik Semarang Sejak 2007
+                </span>
+                <p class="font-sans text-xs text-[#404040] mt-0.5">
+                  Garansi penukaran ukuran bila kurang pas • Showroom Pamularsih & Banyumanik Semarang
+                </p>
+              </div>
             </div>
 
           </div>

@@ -1,6 +1,7 @@
 ---
 // src/pages/lokasi-toko.astro
 import Layout from '../layouts/Layout.astro';
+import { MessageCircle, Instagram, ShoppingBag, MapPin, Store } from 'lucide-astro';
 ---
 
 <Layout title="Lokasi Toko & Kontak Resmi | Batik Smile Semarang">
@@ -83,8 +84,10 @@ import Layout from '../layouts/Layout.astro';
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
           
-          <div class="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-            <span class="text-2xl block">💬</span>
+          <div class="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-3 flex flex-col items-center">
+            <div class="w-12 h-12 rounded-full bg-[#25D366]/10 flex items-center justify-center">
+              <MessageCircle class="w-6 h-6 text-[#25D366]" />
+            </div>
             <span class="font-sans text-xs uppercase tracking-widest text-[#C5A059] font-bold block">WhatsApp CS & Pesanan</span>
             <p class="font-serif text-xl text-white font-medium">081-390-8888-09</p>
             <a href="https://wa.me/6281390888809" target="_blank" rel="noopener noreferrer" class="text-xs text-[#25D366] hover:underline block pt-1">
@@ -92,8 +95,10 @@ import Layout from '../layouts/Layout.astro';
             </a>
           </div>
 
-          <div class="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-            <span class="text-2xl block">📸</span>
+          <div class="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-3 flex flex-col items-center">
+            <div class="w-12 h-12 rounded-full bg-pink-500/10 flex items-center justify-center">
+              <Instagram class="w-6 h-6 text-pink-400" />
+            </div>
             <span class="font-sans text-xs uppercase tracking-widest text-[#C5A059] font-bold block">Instagram Resmi</span>
             <p class="font-serif text-xl text-white font-medium">@Batiksmile.official</p>
             <a href="https://instagram.com/Batiksmile.official" target="_blank" rel="noopener noreferrer" class="text-xs text-pink-400 hover:underline block pt-1">
@@ -101,8 +106,10 @@ import Layout from '../layouts/Layout.astro';
             </a>
           </div>
 
-          <div class="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-2">
-            <span class="text-2xl block">🛍️</span>
+          <div class="p-6 rounded-2xl bg-white/5 border border-white/10 space-y-3 flex flex-col items-center">
+            <div class="w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center">
+              <ShoppingBag class="w-6 h-6 text-orange-400" />
+            </div>
             <span class="font-sans text-xs uppercase tracking-widest text-[#C5A059] font-bold block">Shopee Official</span>
             <p class="font-serif text-xl text-white font-medium">Batik Smile Premium</p>
             <a href="https://shopee.co.id" target="_blank" rel="noopener noreferrer" class="text-xs text-orange-400 hover:underline block pt-1">
