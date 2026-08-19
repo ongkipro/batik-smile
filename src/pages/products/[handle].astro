@@ -367,7 +367,7 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
           </p>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-5 sm:gap-7">
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-5 lg:gap-6">
           {relatedProducts.map((rel: any) => {
             const relImg = rel.images?.edges?.[0]?.node?.url || "https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_couple_1785995932731_51f1e349-35df-4896-b08d-6290f84897d9.jpg?v=1786005734";
             const minPrice = parseInt(rel.priceRange?.minVariantPrice?.amount || "0");

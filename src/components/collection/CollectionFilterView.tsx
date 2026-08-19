@@ -443,7 +443,7 @@ export default function CollectionFilterView({
             </button>
           </div>
         ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2.5 sm:gap-5 lg:gap-6">
             {filteredProducts.map((product) => {
               const prodImg = product.images?.edges?.[0]?.node?.url || "https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_shop_all_1786007684766.jpg?v=1786007711";
               const minPrice = parseInt(product.priceRange?.minVariantPrice?.amount || '0');
@@ -462,18 +462,18 @@ export default function CollectionFilterView({
                 <a
                   key={product.id}
                   href={`/products/${product.handle}`}
-                  className={`group block rounded-2xl p-3 sm:p-3.5 shadow-sm transition-all duration-300 border ${styles.cardBg}`}
+                  className={`group block rounded-xl sm:rounded-2xl p-2 sm:p-3.5 shadow-xs transition-all duration-300 border ${styles.cardBg}`}
                 >
                   {/* Image Container */}
-                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-black/20 mb-3 rounded-xl border border-white/10">
+                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-black/20 mb-2 sm:mb-2.5 rounded-lg sm:rounded-xl border border-white/10">
                     
                     {/* Tier / Discount Badge */}
-                    <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1">
-                      <span className={`${tierBadge.bg} ${tierBadge.text} text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded shadow-sm`}>
+                    <div className="absolute top-1.5 left-1.5 sm:top-2.5 sm:left-2.5 z-10 flex flex-col gap-1">
+                      <span className={`${tierBadge.bg} ${tierBadge.text} text-[9px] sm:text-[10px] uppercase tracking-wider font-extrabold px-1.5 sm:px-2 py-0.5 rounded-sm sm:rounded shadow-xs`}>
                         {tierBadge.label}
                       </span>
                       {hasDiscount && (
-                        <span className="bg-red-700 text-white text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded shadow-sm">
+                        <span className="bg-red-700 text-white text-[9px] sm:text-[10px] uppercase tracking-wider font-extrabold px-1.5 sm:px-2 py-0.5 rounded-sm sm:rounded shadow-xs">
                           Diskon
                         </span>
                       )}
@@ -495,21 +495,21 @@ export default function CollectionFilterView({
                   </div>
 
                   {/* Product Details */}
-                  <div className="flex flex-col text-left px-1">
-                    <span className={`font-sans text-[11px] uppercase tracking-wider font-bold mb-1 block ${styles.cardMaterial}`}>
+                  <div className="flex flex-col text-left px-0.5 sm:px-1">
+                    <span className={`font-sans text-[9px] sm:text-[11px] uppercase tracking-wider font-bold mb-0.5 sm:mb-1 block truncate ${styles.cardMaterial}`}>
                       {material}
                     </span>
 
-                    <h3 className={`font-bold transition-colors leading-[1.35] line-clamp-2 min-h-[2.7em] mb-2 text-[13px] sm:text-[14px] ${styles.cardTitle}`}>
+                    <h3 className={`font-bold transition-colors leading-[1.3] line-clamp-2 min-h-[2.6em] mb-1.5 sm:mb-2 text-[12px] sm:text-[14px] ${styles.cardTitle}`}>
                       {product.title}
                     </h3>
 
-                    <div className={`flex items-baseline gap-2 mt-auto pt-1.5 border-t ${styles.cardPriceBorder}`}>
-                      <p className={`font-sans text-sm sm:text-base font-extrabold tracking-tight ${styles.cardPrice}`}>
+                    <div className={`flex flex-wrap items-baseline gap-x-1.5 gap-y-0.5 mt-auto pt-1 sm:pt-1.5 border-t ${styles.cardPriceBorder}`}>
+                      <p className={`font-sans text-[13px] sm:text-base font-extrabold tracking-tight leading-tight ${styles.cardPrice}`}>
                         Rp {minPrice.toLocaleString('id-ID')}
                       </p>
                       {hasDiscount && (
-                        <span className="font-sans text-xs line-through opacity-50 font-normal">
+                        <span className="font-sans text-[10px] sm:text-xs line-through opacity-50 font-normal leading-tight">
                           Rp {comparePrice.toLocaleString('id-ID')}
                         </span>
                       )}
