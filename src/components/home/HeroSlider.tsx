@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 interface Slide {
   id: string;
@@ -16,10 +16,10 @@ const SLIDES: Slide[] = [
   {
     id: 'mahakarya',
     tierBadge: 'Kasta Tertinggi • Sutra Prada',
-    tagline: 'Sejak 2007 • Semarang & Solo',
+    tagline: 'Sejak 2007 • Butik Semarang & Solo',
     title: 'Sarimbit Mahakarya',
     subtitle: 'Keagungan Sutra & Prada Emas Murni',
-    description: 'Mahakarya sutra ATBM eksklusif berpadu canting prada emas murni, dipersembahkan khusus untuk momen sakral resepsi pernikahan keluarga terhormat.',
+    description: 'Mahakarya sutra ATBM eksklusif berpadu canting prada emas murni, dipersembahkan khusus untuk momen sakral resepsi pernikahan keluarga.',
     ctaText: 'Eksplorasi Mahakarya',
     ctaLink: '/collections/sarimbit-mahakarya-heritage',
     image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_couple_1785995932731_51f1e349-35df-4896-b08d-6290f84897d9.jpg?v=1786005734'
@@ -41,7 +41,7 @@ const SLIDES: Slide[] = [
     tagline: 'Kenyamanan Harian & Hari Raya',
     title: 'Essential Daily',
     subtitle: 'Kehangatan Kasih Keluarga Tercinta',
-    description: 'Pilihan sarimbit katun primisima yang sejuk, breathable, dan lembut dengan corak klasik harmonis, merajut kebersamaan keluarga di setiap langkah.',
+    description: 'Pilihan sarimbit katun primisima yang sejuk, adem, dan lembut dengan corak klasik harmonis, merajut kebersamaan keluarga di setiap langkah.',
     ctaText: 'Jelajahi Essential',
     ctaLink: '/collections/sarimbit-essential-daily',
     image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_couple_1785995932731_7d17a644-177e-4489-bcf6-490c3c74d39f.jpg?v=1786005749'
@@ -62,12 +62,13 @@ const SLIDES: Slide[] = [
 export default function HeroSlider() {
   const [current, setCurrent] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
 
   useEffect(() => {
     if (isPaused) return;
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % SLIDES.length);
-    }, 6500);
+    }, 6000);
     return () => clearInterval(interval);
   }, [isPaused]);
 
@@ -79,11 +80,28 @@ export default function HeroSlider() {
     setCurrent((prev) => (prev + 1) % SLIDES.length);
   };
 
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current === null) return;
+    const diff = touchStartX.current - e.changedTouches[0].clientX;
+    if (diff > 50) {
+      nextSlide();
+    } else if (diff < -50) {
+      prevSlide();
+    }
+    touchStartX.current = null;
+  };
+
   return (
     <section 
-      className="relative w-full h-[88vh] lg:h-[92vh] overflow-hidden bg-[#0D0D0D] select-none"
+      className="relative w-full h-[85vh] sm:h-[88vh] lg:h-[92vh] overflow-hidden bg-[#0D0D0D] select-none"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Background Images with Cross-Fade */}
       {SLIDES.map((slide, idx) => (
@@ -101,55 +119,55 @@ export default function HeroSlider() {
           />
 
           {/* Luxury Editorial Gradients */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30 lg:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/55 to-black/35 lg:to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent hidden lg:block" />
         </div>
       ))}
 
       {/* Slide Content (Editorial Layout) */}
-      <div className="relative z-20 max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-end lg:justify-center pb-24 lg:pb-0">
+      <div className="relative z-20 max-w-7xl mx-auto h-full px-4 sm:px-6 lg:px-8 flex flex-col justify-end lg:justify-center pb-24 sm:pb-28 lg:pb-0">
         <div className="max-w-3xl text-left">
           
           {/* Gold Pill Badge */}
-          <div className="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-black/60 backdrop-blur-md border border-[#C5A059]/40 mb-4 shadow-lg">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059] animate-pulse"></span>
-            <span className="font-sans text-[10px] uppercase tracking-[0.25em] font-bold text-[#C5A059]">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-black/70 backdrop-blur-md border border-[#C5A059]/40 mb-3 shadow-lg">
+            <span className="w-2 h-2 rounded-full bg-[#C5A059] animate-pulse"></span>
+            <span className="font-sans text-[10px] sm:text-xs uppercase tracking-wider font-bold text-[#C5A059]">
               {SLIDES[current].tierBadge}
             </span>
           </div>
 
           {/* Subtitle Tagline */}
-          <p className="font-sans text-xs lg:text-sm uppercase tracking-[0.25em] text-[#E0C58A] font-semibold mb-2">
+          <p className="font-sans text-xs sm:text-sm uppercase tracking-wider text-[#E0C58A] font-bold mb-1.5">
             {SLIDES[current].tagline}
           </p>
 
           {/* Main Title (Cormorant Garamond Couture Headline) */}
-          <h1 className="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal text-white mb-2 leading-[1.12] tracking-tight">
+          <h1 className="font-serif text-3xl sm:text-5xl lg:text-6xl font-semibold text-white mb-2 leading-[1.15] tracking-tight">
             {SLIDES[current].title}
           </h1>
-          <h2 className="font-serif italic text-2xl sm:text-3xl lg:text-4xl text-[#FAF7F2] mb-5 font-light leading-[1.25]">
+          <h2 className="font-serif italic text-xl sm:text-2xl lg:text-3xl text-[#FAF7F2] mb-3.5 font-light leading-[1.3]">
             {SLIDES[current].subtitle}
           </h2>
 
           {/* Description */}
-          <p className="font-sans text-xs sm:text-sm text-white/90 leading-[1.65] max-w-xl mb-8 line-clamp-3 font-light">
+          <p className="font-sans text-xs sm:text-sm text-neutral-200 leading-[1.7] max-w-xl mb-6 line-clamp-3 font-normal">
             {SLIDES[current].description}
           </p>
 
           {/* Luxury CTA Actions */}
-          <div className="flex flex-wrap items-center gap-4">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4">
             <a
               href={SLIDES[current].ctaLink}
-              className="inline-flex items-center justify-center px-8 py-4 bg-[#9E4719] hover:bg-[#7A320C] text-white font-sans text-xs uppercase tracking-[0.22em] font-bold transition-all duration-300 shadow-2xl hover:shadow-[#9E4719]/40 hover:-translate-y-0.5 rounded"
+              className="inline-flex items-center justify-center px-7 py-3.5 sm:px-8 sm:py-4 bg-[#9E4719] hover:bg-[#7A320C] text-white font-sans text-xs sm:text-sm uppercase tracking-wider font-bold transition-all duration-300 shadow-2xl hover:shadow-[#9E4719]/40 hover:-translate-y-0.5 rounded-xl cursor-pointer"
             >
-              {SLIDES[current].ctaText}
-              <svg className="ml-2.5 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <span>{SLIDES[current].ctaText}</span>
+              <svg className="ml-2 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
                 <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </a>
             <a
-              href="/pages/tentang-kami"
-              className="inline-flex items-center justify-center px-7 py-4 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md border border-white/30 font-sans text-xs uppercase tracking-[0.22em] font-medium transition-all duration-300 hover:-translate-y-0.5 rounded"
+              href="/tentang-kami"
+              className="inline-flex items-center justify-center px-6 py-3.5 sm:px-7 sm:py-4 bg-white/15 hover:bg-white/25 text-white backdrop-blur-md border border-white/30 font-sans text-xs sm:text-sm uppercase tracking-wider font-bold transition-all duration-300 hover:-translate-y-0.5 rounded-xl cursor-pointer"
             >
               Filosofi Brand
             </a>
@@ -162,9 +180,9 @@ export default function HeroSlider() {
       <button
         onClick={prevSlide}
         aria-label="Slide Sebelumnya"
-        className="hidden lg:flex absolute left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full border border-white/20 bg-black/40 hover:bg-[#9E4719] hover:border-[#9E4719] text-white items-center justify-center backdrop-blur-md transition-all duration-300"
+        className="hidden lg:flex absolute left-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full border border-white/20 bg-black/40 hover:bg-[#9E4719] hover:border-[#9E4719] text-white items-center justify-center backdrop-blur-md transition-all duration-300 cursor-pointer"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="m15 18-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
@@ -172,35 +190,36 @@ export default function HeroSlider() {
       <button
         onClick={nextSlide}
         aria-label="Slide Berikutnya"
-        className="hidden lg:flex absolute right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full border border-white/20 bg-black/40 hover:bg-[#9E4719] hover:border-[#9E4719] text-white items-center justify-center backdrop-blur-md transition-all duration-300"
+        className="hidden lg:flex absolute right-8 top-1/2 -translate-y-1/2 z-30 w-12 h-12 rounded-full border border-white/20 bg-black/40 hover:bg-[#9E4719] hover:border-[#9E4719] text-white items-center justify-center backdrop-blur-md transition-all duration-300 cursor-pointer"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="m9 18 6-6-6-6" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
 
       {/* Slide Indicators & Counter (01 / 04) */}
-      <div className="absolute bottom-8 left-0 w-full z-30 flex justify-center items-center gap-4">
+      <div className="absolute bottom-6 sm:bottom-8 left-0 w-full z-30 flex justify-center items-center gap-3">
         {SLIDES.map((slide, idx) => (
           <button
             key={slide.id}
             onClick={() => setCurrent(idx)}
             aria-label={`Pindah ke slide ${slide.title}`}
-            className="group flex items-center gap-2 py-2"
+            className="group flex items-center gap-2 py-2 cursor-pointer"
           >
             <div
-              className={`h-[2px] transition-all duration-500 ${
+              className={`h-[3px] rounded-full transition-all duration-500 ${
                 idx === current ? 'w-10 bg-[#C5A059]' : 'w-3 bg-white/30 group-hover:bg-white/60'
               }`}
             />
             {idx === current && (
-              <span className="font-sans text-[11px] text-[#C5A059] tracking-[0.2em] font-semibold">
+              <span className="font-sans text-xs text-[#C5A059] tracking-wider font-bold">
                 0{idx + 1}
               </span>
             )}
           </button>
         ))}
       </div>
+
     </section>
   );
 }
