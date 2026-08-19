@@ -139,7 +139,7 @@ export default function MobileNavigation() {
           </a>
 
           <a 
-            href="https://wa.me/628123456789?text=Halo%20Batik%20Smile,%20saya%20ingin%20konsultasi%20pemesanan%20batik" 
+            href="https://wa.me/6281390888809?text=Halo%20Batik%20Smile,%20saya%20ingin%20konsultasi%20pemesanan%20batik" 
             target="_blank"
             rel="noopener noreferrer"
             className="flex flex-col items-center gap-1 text-[#25D366] transition-colors py-1 px-2"
@@ -245,7 +245,7 @@ export default function MobileNavigation() {
                 Konsultasikan kebutuhan seragam keluarga atau seragam kantor dengan desainer kami.
               </p>
               <a 
-                href="https://wa.me/628123456789?text=Halo%20Batik%20Smile,%20saya%20ingin%20konsultasi%20jahit%20seragam%20keluarga"
+                href="https://wa.me/6281390888809?text=Halo%20Batik%20Smile,%20saya%20ingin%20konsultasi%20jahit%20seragam%20keluarga"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block bg-[#9E4719] text-white py-2.5 px-6 rounded-full font-sans text-xs font-bold uppercase tracking-wider shadow"
