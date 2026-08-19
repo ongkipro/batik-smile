@@ -35,7 +35,15 @@ interface Props {
 }
 
 export default function CollectionFilterView({ initialProducts, collectionTitle, collectionHandle }: Props) {
-  const [selectedTier, setSelectedTier] = useState<string>('all');
+  const defaultTier = collectionHandle.includes('mahakarya')
+    ? 'mahakarya'
+    : collectionHandle.includes('signature')
+      ? 'signature'
+      : collectionHandle.includes('essential')
+        ? 'essential'
+        : 'all';
+
+  const [selectedTier, setSelectedTier] = useState<string>(defaultTier);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPriceRange, setSelectedPriceRange] = useState<string>('all');
   const [sortBy, setSortBy] = useState<string>('featured');

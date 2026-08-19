@@ -2,7 +2,9 @@
 // src/pages/collections/[handle].astro
 import Layout from '../../layouts/Layout.astro';
 import BatikDivider from '../../components/ui/BatikDivider.astro';
+import BatikCorner from '../../components/ui/BatikCorner.astro';
 import CollectionFilterView from '../../components/collection/CollectionFilterView.tsx';
+import { Crown, Sparkles, Heart, ShieldCheck, Layers } from 'lucide-astro';
 import { shopifyFetch, getCollectionQuery, getProductsQuery } from '../../lib/shopify';
 
 export async function getStaticPaths() {
@@ -141,35 +143,126 @@ if (!collection) {
   };
 }
 
-// 3-Tier UI Engine Logic
+// 3-Tier Distinct Immersive Themes Logic
 const isMahakarya = actualHandle?.includes('mahakarya');
 const isSignature = actualHandle?.includes('signature');
+const isEssential = actualHandle?.includes('essential');
 
-const tierLabel = isMahakarya
-  ? 'Kasta Tertinggi • Sutra Prada'
+const themeConfig = isMahakarya
+  ? {
+      theme: 'mahakarya',
+      heroBg: 'bg-gradient-to-b from-[#181611] via-[#11100C] to-[#0A0907] text-[#FAF7F2] border-b border-[#C5A059]/40',
+      badgeBg: 'bg-gradient-to-r from-[#C5A059] via-[#E0C58A] to-[#9A7730] text-[#0A0A08]',
+      badgeText: 'Kasta Tertinggi • Sutra Prada Emas Murni',
+      titleColor: 'text-white',
+      dividerVariant: 'gold' as const,
+      descColor: 'text-amber-100/90',
+      cornerVariant: 'gold' as const,
+      tagline: 'Persembahan Momen Sakral Pernikahan & Resepsi Kehormatan',
+      specs: [
+        'Sutra ATBM Asli Pilihan',
+        'Canting Prada Emas Murni',
+        'Jahitan Butik Presisi Tinggi'
+      ]
+    }
   : isSignature
-    ? 'Signature Series • Dobby & Primisima'
-    : 'Koleksi Batik Smile Semarang';
+    ? {
+        theme: 'signature',
+        heroBg: 'bg-gradient-to-b from-[#0F1D38] via-[#0B1528] to-[#060D1A] text-white border-b border-blue-500/40',
+        badgeBg: 'bg-[#1E3A8A] text-white border border-blue-400/40',
+        badgeText: 'Koleksi Desainer • Tenun Dobby & Tarum Navy',
+        titleColor: 'text-white',
+        dividerVariant: 'light' as const,
+        descColor: 'text-blue-100/90',
+        cornerVariant: 'light' as const,
+        tagline: 'Kewibawaan Corak Kontemporer untuk Resepsi & Agenda Bisnis',
+        specs: [
+          'Tekstur Dobby Timbul Berkarakter',
+          'Pewarnaan Tarum Navy Eksklusif',
+          'Lapis Furing Katun Hero Halus'
+        ]
+      }
+    : isEssential
+      ? {
+          theme: 'essential',
+          heroBg: 'bg-gradient-to-b from-[#FAF0E6] via-[#F7EBE1] to-[#FAF7F2] text-[#121212] border-b border-[#9E4719]/25',
+          badgeBg: 'bg-[#9E4719] text-white',
+          badgeText: 'Keluarga Harmonis • Katun Primisima Sanforized',
+          titleColor: 'text-[#121212]',
+          dividerVariant: 'bronze' as const,
+          descColor: 'text-[#333333]',
+          cornerVariant: 'gold' as const,
+          tagline: 'Kehangatan Kasih Keluarga untuk Kenyamanan Silaturahmi & Hari Raya',
+          specs: [
+            'Katun Primisima 100% Sejuk',
+            'Breathable & Halus di Kulit',
+            'Pola Serasi Ayah, Ibu & Anak'
+          ]
+        }
+      : {
+          theme: 'default',
+          heroBg: 'bg-[#F2EDE4] text-[#121212] border-b border-neutral-200',
+          badgeBg: 'bg-[#9E4719]/10 text-[#9E4719] border border-[#9E4719]/20',
+          badgeText: 'Koleksi Batik Smile Semarang',
+          titleColor: 'text-[#121212]',
+          dividerVariant: 'bronze' as const,
+          descColor: 'text-[#404040]',
+          cornerVariant: 'gold' as const,
+          tagline: 'Warisan Busana Nusantara Sejak 2007',
+          specs: [
+            'Batik Resmi Solo & Semarangan',
+            'Standar Jahitan Butik Bergaransi',
+            'Pelayanan Prima 3S 1C 1T 1H'
+          ]
+        };
 ---
 
 <Layout title={`${collection.title} | Batik Smile Semarang`}>
   <div class="min-h-screen bg-[#FAF7F2] text-[#121212]">
     
-    <!-- 1. HERO HEADER (High Contrast & Clear Typography) -->
-    <section class="w-full py-12 sm:py-16 bg-[#F2EDE4] border-b border-neutral-200">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <!-- 1. HERO HEADER WITH DISTINCT THEME PER KASTA -->
+    <section class={`relative w-full py-14 sm:py-20 ${themeConfig.heroBg} overflow-hidden`}>
+      <BatikCorner position="top-right" variant={themeConfig.cornerVariant} className="absolute top-4 right-4 opacity-40" size={48} />
+      <BatikCorner position="bottom-left" variant={themeConfig.cornerVariant} className="absolute bottom-4 left-4 opacity-40" size={48} />
+
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
         
-        <span class="inline-block px-3.5 py-1 rounded-full bg-[#9E4719]/10 text-[#9E4719] text-xs uppercase tracking-wider font-bold mb-3 border border-[#9E4719]/20">
-          {tierLabel}
-        </span>
+        {/* Tier / Collection Pill Badge */}
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full font-sans text-xs uppercase tracking-wider font-extrabold mb-3 shadow-md border border-white/20">
+          {isMahakarya && <Crown class="w-3.5 h-3.5 text-amber-900" />}
+          {isSignature && <Sparkles class="w-3.5 h-3.5 text-blue-200" />}
+          {isEssential && <Heart class="w-3.5 h-3.5 text-white" />}
+          {!isMahakarya && !isSignature && !isEssential && <Layers class="w-3.5 h-3.5 text-[#9E4719]" />}
+          <span class={themeConfig.badgeBg.includes('text') ? '' : 'text-inherit'}>
+            {themeConfig.badgeText}
+          </span>
+        </div>
         
-        <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl text-[#121212] font-semibold mb-3 tracking-tight">
+        {/* Main Title */}
+        <h1 class={`font-serif text-3xl sm:text-5xl lg:text-6xl ${themeConfig.titleColor} font-semibold mb-3 tracking-tight drop-shadow-sm`}>
           {collection.title}
         </h1>
         
-        <BatikDivider variant="bronze" className="my-3" />
+        {/* Decorative Divider */}
+        <BatikDivider variant={themeConfig.dividerVariant} className="my-3" />
         
-        <div class="font-sans text-xs sm:text-sm text-[#404040] max-w-2xl mx-auto leading-relaxed font-normal" set:html={collection.descriptionHtml} />
+        {/* Tagline Subtitle */}
+        <p class="font-sans text-xs sm:text-sm uppercase tracking-wider font-bold text-amber-500/90 mb-3">
+          {themeConfig.tagline}
+        </p>
+
+        {/* Description */}
+        <div class={`font-sans text-xs sm:text-sm ${themeConfig.descColor} max-w-2xl mx-auto leading-relaxed font-normal`} set:html={collection.descriptionHtml} />
+
+        {/* 3 Key Specs Pills */}
+        <div class="mt-6 flex flex-wrap items-center justify-center gap-2 sm:gap-3">
+          {themeConfig.specs.map((spec) => (
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-black/20 backdrop-blur border border-white/15 text-[11px] sm:text-xs font-sans font-medium text-white/90">
+              <span class="text-amber-400 font-bold">✓</span>
+              <span>{spec}</span>
+            </span>
+          ))}
+        </div>
         
       </div>
     </section>
