@@ -21,7 +21,7 @@ const SHOPIFY_MENU: Record<string, MenuSection> = {
     title: 'Koleksi Busana Wanita',
     handle: 'batik-wanita',
     badge: '11 Kategori',
-    image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_wanita_1785995697669_9a5b3a31-645a-4386-be86-42d87e07663e.jpg?v=1786004400',
+    image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_wanita_cat_1786004365241.jpg?v=1786004433',
     description: 'Ragam busana batik wanita anggun dari blus modern, tunik, gamis primisima, hingga kebaya encim brokat.',
     allHref: '/collections/batik-wanita',
     subcategories: [
@@ -42,7 +42,7 @@ const SHOPIFY_MENU: Record<string, MenuSection> = {
     title: 'Koleksi Busana Pria',
     handle: 'batik-pria',
     badge: 'Lapis Furing Hero',
-    image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_pria_1785995886986_54ad5168-3619-4b88-9abc-ad7b8721b86f.jpg?v=1786006769',
+    image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_pria_1785995886986.jpg?v=1786004442',
     description: 'Kemeja batik pria furing halus, hem santai motif dobby, dan celana panjang sirwal berwibawa.',
     allHref: '/collections/batik-pria',
     subcategories: [
@@ -55,7 +55,7 @@ const SHOPIFY_MENU: Record<string, MenuSection> = {
     title: '3 Kasta Sarimbit Keluarga',
     handle: 'sarimbit-batik-couple',
     badge: '3 Kasta Utama',
-    image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_couple_1785995932731_51f1e349-35df-4896-b08d-6290f84897d9.jpg?v=1786005734',
+    image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_couple_1785995932731.jpg?v=1786004461',
     description: 'Tiga tingkatan mahakarya sarimbit untuk pernikahan, pesta, dan kebersamaan keluarga.',
     allHref: '/collections/sarimbit-batik-couple',
     subcategories: [
@@ -68,7 +68,7 @@ const SHOPIFY_MENU: Record<string, MenuSection> = {
     title: 'Koleksi Batik Anak',
     handle: 'batik-anak',
     badge: '10 Kategori Anak',
-    image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_anak_1785995908867_72946c1f-4bb2-4024-8785-5df1807d7224.jpg?v=1786004481',
+    image: 'https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_batik_anak_cat_1786004381125.jpg?v=1786004452',
     description: 'Busana batik nyaman untuk putra & putri tercinta serta setelan adat Jawa tradisional.',
     allHref: '/collections/batik-anak',
     subcategories: [
