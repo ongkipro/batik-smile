@@ -61,18 +61,11 @@ const isMahakarya = tagStr.includes('mahakarya') || tagStr.includes('sutra') || 
 const isSignature = tagStr.includes('signature') || tagStr.includes('dobby') || product.title.toLowerCase().includes('dobby');
 const isEssential = !isMahakarya && !isSignature;
 
-// 3-Tier PDP Theme Engine
-const pageBg = isMahakarya 
-  ? 'bg-[#101010] text-[#FAF7F2]' 
-  : isSignature 
-    ? 'bg-[#0B1329] text-[#FAF7F2]' 
-    : 'bg-[#FAF7F2] text-[#121212]';
-
-const cardBg = isMahakarya 
-  ? 'bg-[#181818] border-white/10 text-[#FAF7F2]' 
-  : isSignature 
-    ? 'bg-[#111C3D] border-blue-400/20 text-[#FAF7F2]' 
-    : 'bg-white border-[#161616]/10 text-[#121212] shadow-sm';
+const tierInfo = isMahakarya
+  ? { name: 'Kasta Mahakarya', material: 'Sutra ATBM Prada Emas Murni', badgeBg: 'bg-[#C5A059]', badgeText: 'text-[#121212]', border: 'border-[#C5A059]' }
+  : isSignature
+    ? { name: 'Signature Series', material: 'Tenun Dobby Premium Bertekstur', badgeBg: 'bg-[#1E3A8A]', badgeText: 'text-white', border: 'border-[#1E3A8A]' }
+    : { name: 'Essential Daily', material: 'Katun Primisima Sanforized', badgeBg: 'bg-[#9E4719]', badgeText: 'text-white', border: 'border-[#9E4719]' };
 
 const primaryImage = product.featuredImage?.url || "https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_shop_all_1786007684766.jpg?v=1786007711";
 const images = product.images?.edges?.map((e: any) => e.node.url) || [primaryImage];
@@ -98,13 +91,13 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
 }));
 ---
 
-<Layout title={`${product.title} | Batik Smile Nusantara`} description={product.description?.slice(0, 150)}>
+<Layout title={`${product.title} | Batik Smile Semarang`} description={product.description?.slice(0, 150)}>
   
-  <div class={`min-h-screen py-8 sm:py-12 lg:py-16 transition-colors duration-500 ${pageBg}`}>
+  <div class="min-h-screen py-8 sm:py-12 lg:py-16 bg-[#FAF7F2] text-[#121212]">
     
-    <!-- BREADCRUMBS (Readable for Market 35+) -->
+    <!-- BREADCRUMBS (High Contrast for 35+ Demographic) -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 sm:mb-8">
-      <nav class="flex items-center gap-2 font-sans text-xs sm:text-sm font-medium text-[#555555]">
+      <nav class="flex items-center gap-2 font-sans text-xs sm:text-sm font-medium text-[#404040]">
         <a href="/" class="hover:text-[#9E4719] transition-colors">Beranda</a>
         <span class="text-neutral-400">/</span>
         <a href="/collections/shop" class="hover:text-[#9E4719] transition-colors">Katalog</a>
@@ -125,7 +118,7 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
             <div class="flex md:flex-col gap-3 overflow-x-auto md:overflow-y-auto md:max-h-[650px] flex-shrink-0 scrollbar-none">
               {images.map((imgUrl: string, idx: number) => (
                 <button 
-                  class="thumb-btn w-16 h-20 md:w-20 md:h-24 rounded-xl overflow-hidden border-2 border-transparent hover:border-[#9E4719] focus:border-[#9E4719] transition-all flex-shrink-0 opacity-80 hover:opacity-100 shadow-sm cursor-pointer"
+                  class="thumb-btn w-16 h-20 md:w-20 md:h-24 rounded-xl overflow-hidden border-2 border-transparent hover:border-[#9E4719] focus:border-[#9E4719] transition-all flex-shrink-0 opacity-85 hover:opacity-100 shadow-sm cursor-pointer bg-white"
                   data-target-img={imgUrl}
                 >
                   <img src={imgUrl} alt={`${product.title} view ${idx + 1}`} class="w-full h-full object-cover" />
@@ -135,7 +128,7 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
           )}
 
           <!-- Main Hero Image (Large Portrait 4:5) -->
-          <div class="flex-1 relative aspect-[4/5] bg-black/5 rounded-3xl overflow-hidden border border-[#161616]/10 shadow-xl group">
+          <div class="flex-1 relative aspect-[4/5] bg-white rounded-3xl overflow-hidden border border-neutral-200 shadow-lg group">
             <img 
               id="main-product-image"
               src={mainImage} 
@@ -144,46 +137,39 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
             />
 
             <!-- Tier Tag on Image -->
-            {isMahakarya && (
-              <span class="absolute top-4 left-4 bg-black/85 text-[#C5A059] border border-[#C5A059]/40 text-xs uppercase font-bold tracking-widest px-3.5 py-1.5 backdrop-blur-md rounded-lg shadow-lg">
-                Kasta Mahakarya • Sutra Prada
-              </span>
-            )}
-            {isSignature && (
-              <span class="absolute top-4 left-4 bg-slate-900/85 text-[#93C5FD] border border-blue-400/40 text-xs uppercase font-bold tracking-widest px-3.5 py-1.5 backdrop-blur-md rounded-lg shadow-lg">
-                Signature • Tenun Dobby
-              </span>
-            )}
+            <span class={`absolute top-4 left-4 ${tierInfo.badgeBg} ${tierInfo.badgeText} text-xs uppercase font-bold tracking-wider px-3.5 py-1.5 rounded-lg shadow-md`}>
+              {tierInfo.name}
+            </span>
           </div>
         </div>
 
         <!-- PRODUCT INFO PANEL (Columns: 8-12 - Sticky) -->
         <div class="lg:col-span-5 lg:sticky lg:top-24">
-          <div class={`p-6 sm:p-8 rounded-3xl border relative overflow-hidden ${cardBg}`}>
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-neutral-200 shadow-xl space-y-5">
             
             <!-- Brand & Tags -->
-            <div class="flex items-center justify-between gap-2 mb-3">
+            <div class="flex items-center justify-between gap-2">
               <span class="font-sans text-xs sm:text-sm uppercase tracking-wider font-bold text-[#9E4719]">
                 {product.vendor || "Batik Smile Semarang"}
               </span>
-              <span class="text-xs font-mono text-neutral-500 bg-neutral-100 px-2 py-0.5 rounded">
+              <span class="text-xs font-mono text-neutral-600 bg-neutral-100 px-2.5 py-0.5 rounded-full border border-neutral-200">
                 SKU: {handle?.slice(0, 10).toUpperCase()}
               </span>
             </div>
 
             <!-- Title (High Legibility for 35+ demographic) -->
-            <h1 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold mb-3 leading-[1.25] tracking-tight text-[#121212]">
+            <h1 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-semibold leading-[1.25] tracking-tight text-[#121212]">
               {product.title}
             </h1>
 
             <!-- Price & Compare Price (Clear, Bold, Prominent) -->
-            <div class="flex flex-wrap items-baseline gap-3 mb-6 pb-6 border-b border-neutral-200">
+            <div class="flex flex-wrap items-baseline gap-3 pb-5 border-b border-neutral-200">
               <span id="product-display-price" class="font-sans text-3xl sm:text-4xl font-extrabold text-[#9E4719] tracking-tight">
                 Rp {priceStr}
               </span>
               
               {comparePriceStr && (
-                <span id="product-compare-price" class="font-sans text-base sm:text-lg line-through text-neutral-500 font-medium">
+                <span id="product-compare-price" class="font-sans text-base sm:text-lg line-through text-neutral-400 font-normal">
                   Rp {comparePriceStr}
                 </span>
               )}
@@ -201,8 +187,8 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
 
             <!-- Variants (Size Selector with Large Tap Targets for Mobile/Desktop) -->
             {product.variants?.edges?.length > 0 && product.variants.edges[0]?.node?.title !== 'Default Title' && (
-              <div class="mb-6">
-                <div class="flex justify-between items-center mb-3">
+              <div class="space-y-3">
+                <div class="flex justify-between items-center">
                   <span class="font-sans text-sm sm:text-base font-bold text-[#121212]">Pilih Ukuran</span>
                   <button 
                     id="btn-open-size-guide" 
@@ -246,7 +232,7 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
             )}
 
             <!-- Primary CTA Button (Tall & Big for Easy Clicking) -->
-            <div class="mb-7">
+            <div>
               <button 
                 id="btn-add-to-cart"
                 type="button"
@@ -278,7 +264,8 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
                   <span class="group-open:rotate-180 transition-transform text-[#9E4719] text-sm">▼</span>
                 </summary>
                 <div class="mt-3 font-sans text-sm sm:text-base leading-[1.7] text-[#2A2A2A] space-y-2 font-normal">
-                  <p>• <strong>Bahan Dasar:</strong> {isMahakarya ? 'Sutra ATBM Prada Emas Murni' : isSignature ? 'Tenun Dobby Premium Bertekstur' : 'Katun Primisima Sanforized (Adem, Lembut & Menyerap Keringat)'}</p>
+                  <p>• <strong>Kasta Busana:</strong> <span class="font-bold text-[#9E4719]">{tierInfo.name}</span></p>
+                  <p>• <strong>Bahan Dasar:</strong> {tierInfo.material}</p>
                   <p>• <strong>Lapisan Dalam:</strong> Dilapisi Furing Hero katun halus, nyaman di kulit dan tidak menerawang saat beraktivitas.</p>
                   <p>• <strong>Jahitan:</strong> Standar butik resmi Semarang dengan jahitan kuat, presisi, dan kancing tertutup rapi.</p>
                 </div>
@@ -300,7 +287,7 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
             </div>
 
             <!-- Trust Badge (Batik Smile Semarang 2007) -->
-            <div class="mt-6 p-4 rounded-2xl bg-amber-50/80 border border-amber-200/80 text-center">
+            <div class="p-4 rounded-2xl bg-amber-50/90 border border-amber-200 text-center">
               <span class="font-sans text-xs sm:text-sm font-bold text-[#9E4719] block mb-1">
                 Layanan 3S 1C 1T 1H • Butik Semarang Sejak 2007
               </span>
@@ -322,11 +309,11 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
           <span class="font-sans text-xs sm:text-sm uppercase tracking-[0.25em] text-[#9E4719] font-bold block mb-1">
             Harmoni Nusantara
           </span>
-          <h2 class="font-serif text-3xl sm:text-4xl font-normal leading-[1.2]">
+          <h2 class="font-serif text-3xl sm:text-4xl text-[#121212] font-semibold leading-[1.2]">
             Padukan Dengan Pasangannya
           </h2>
           <BatikDivider variant="bronze" className="my-3" />
-          <p class="font-sans text-xs sm:text-sm text-[#555555] mt-1 leading-[1.6]">
+          <p class="font-sans text-xs sm:text-sm text-[#404040] mt-1 leading-[1.6]">
             Sempurnakan penampilan keluarga Anda dengan kombinasi sarimbit selaras.
           </p>
         </div>
@@ -359,7 +346,7 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
 
   <!-- MODAL PANDUAN UKURAN (SIZE GUIDE - BESPOKE TABLE FOR 35+) -->
   <div id="modal-size-guide" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-fade-in">
-    <div class="bg-[#FAF7F2] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-[#161616]/10 relative max-h-[90vh] overflow-y-auto">
+    <div class="bg-[#FAF7F2] rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-neutral-200 relative max-h-[90vh] overflow-y-auto">
       
       <button id="btn-close-size-guide" class="absolute top-5 right-5 w-9 h-9 rounded-full bg-black/5 hover:bg-[#9E4719] hover:text-white flex items-center justify-center text-sm font-bold transition-colors cursor-pointer">
         ✕
@@ -451,72 +438,62 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
           mainImg.style.opacity = '1';
         }, 150);
       }
+      thumbBtns.forEach(b => b.classList.remove('border-[#9E4719]', 'opacity-100'));
+      btn.classList.add('border-[#9E4719]', 'opacity-100');
     });
   });
 
-  // Dynamic Variant & Price Switcher
+  // Size Selector & Price Switcher
   const sizeBtns = document.querySelectorAll('.size-btn');
   const variantInput = document.getElementById('selected-variant-id') as HTMLInputElement;
   const displayPrice = document.getElementById('product-display-price');
   const comparePrice = document.getElementById('product-compare-price');
-  const discountBadge = document.getElementById('product-discount-badge');
 
   sizeBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      sizeBtns.forEach(b => {
-        b.classList.remove('bg-[#9E4719]', 'text-white', 'border-[#9E4719]', 'shadow-md', 'scale-[1.02]');
-        b.classList.add('bg-white', 'text-[#121212]', 'border-neutral-300');
-      });
-      btn.classList.remove('bg-white', 'text-[#121212]', 'border-neutral-300');
-      btn.classList.add('bg-[#9E4719]', 'text-white', 'border-[#9E4719]', 'shadow-md', 'scale-[1.02]');
-
       const varId = btn.getAttribute('data-variant-id');
-      const varPriceRaw = btn.getAttribute('data-variant-price');
-      const varCompareRaw = btn.getAttribute('data-variant-compare');
+      const varPrice = btn.getAttribute('data-variant-price');
+      const varCompare = btn.getAttribute('data-variant-compare');
 
-      if (variantInput && varId) {
+      if (varId && variantInput) {
         variantInput.value = varId;
       }
 
-      if (displayPrice && varPriceRaw) {
-        const vPrice = parseInt(varPriceRaw);
-        displayPrice.textContent = `Rp ${vPrice.toLocaleString('id-ID')}`;
+      // Update active state styling
+      sizeBtns.forEach(b => {
+        if (!b.hasAttribute('disabled')) {
+          b.className = 'size-btn h-12 flex items-center justify-center font-sans text-sm sm:text-base tracking-wider uppercase border-2 transition-all rounded-xl font-bold cursor-pointer bg-white text-[#121212] border-neutral-300 hover:border-[#9E4719] hover:text-[#9E4719]';
+        }
+      });
+      btn.className = 'size-btn h-12 flex items-center justify-center font-sans text-sm sm:text-base tracking-wider uppercase border-2 transition-all rounded-xl font-bold cursor-pointer bg-[#9E4719] text-white border-[#9E4719] shadow-md scale-[1.02]';
 
-        if (varCompareRaw) {
-          const vCompare = parseInt(varCompareRaw);
-          if (vCompare > vPrice) {
-            if (comparePrice) {
-              comparePrice.textContent = `Rp ${vCompare.toLocaleString('id-ID')}`;
-              comparePrice.style.display = 'inline';
-            }
-            if (discountBadge) {
-              const disc = Math.round(((vCompare - vPrice) / vCompare) * 100);
-              discountBadge.textContent = `Hemat ${disc}%`;
-              discountBadge.style.display = 'inline-block';
-            }
-          } else {
-            if (comparePrice) comparePrice.style.display = 'none';
-            if (discountBadge) discountBadge.style.display = 'none';
-          }
+      // Update Price Display
+      if (varPrice && displayPrice) {
+        const pNum = parseInt(varPrice);
+        displayPrice.textContent = `Rp ${pNum.toLocaleString('id-ID')}`;
+      }
+      if (comparePrice) {
+        if (varCompare && parseInt(varCompare) > parseInt(varPrice || '0')) {
+          comparePrice.textContent = `Rp ${parseInt(varCompare).toLocaleString('id-ID')}`;
+          comparePrice.classList.remove('hidden');
+        } else {
+          comparePrice.classList.add('hidden');
         }
       }
     });
   });
 
-  // Add to cart handler -> redirects cleanly to /cart page
+  // Add to Cart Button Logic
   const addBtn = document.getElementById('btn-add-to-cart');
   if (addBtn) {
     addBtn.addEventListener('click', async () => {
       const variantId = variantInput?.value;
       if (!variantId) return;
 
-      const originalText = addBtn.innerHTML;
+      const originalHtml = addBtn.innerHTML;
       addBtn.innerHTML = `
-        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        <span>Menambahkan Ke Tas Belanja...</span>
+        <div class="inline-block animate-spin w-5 h-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+        <span>Menambahkan ke Tas...</span>
       `;
       (addBtn as HTMLButtonElement).disabled = true;
 
@@ -525,36 +502,32 @@ const variantsData = (product.variants?.edges || []).map((e: any) => ({
         window.location.href = '/cart';
       } catch (err) {
         console.error("Gagal menambahkan ke tas belanja:", err);
-        addBtn.innerHTML = originalText;
+        addBtn.innerHTML = originalHtml;
         (addBtn as HTMLButtonElement).disabled = false;
       }
     });
   }
 
-  // Size Guide Modal Handler
-  const openSizeGuideBtn = document.getElementById('btn-open-size-guide');
-  const closeSizeGuideBtn = document.getElementById('btn-close-size-guide');
-  const sizeGuideModal = document.getElementById('modal-size-guide');
+  // Modal Panduan Ukuran (Size Guide)
+  const openGuideBtn = document.getElementById('btn-open-size-guide');
+  const closeGuideBtn = document.getElementById('btn-close-size-guide');
+  const modalGuide = document.getElementById('modal-size-guide');
 
-  if (openSizeGuideBtn && sizeGuideModal) {
-    openSizeGuideBtn.addEventListener('click', () => {
-      sizeGuideModal.classList.remove('hidden');
-      sizeGuideModal.classList.add('flex');
+  if (openGuideBtn && modalGuide && closeGuideBtn) {
+    openGuideBtn.addEventListener('click', () => {
+      modalGuide.classList.remove('hidden');
+      modalGuide.classList.add('flex');
     });
-  }
 
-  if (closeSizeGuideBtn && sizeGuideModal) {
-    closeSizeGuideBtn.addEventListener('click', () => {
-      sizeGuideModal.classList.add('hidden');
-      sizeGuideModal.classList.remove('flex');
+    closeGuideBtn.addEventListener('click', () => {
+      modalGuide.classList.add('hidden');
+      modalGuide.classList.remove('flex');
     });
-  }
 
-  if (sizeGuideModal) {
-    sizeGuideModal.addEventListener('click', (e) => {
-      if (e.target === sizeGuideModal) {
-        sizeGuideModal.classList.add('hidden');
-        sizeGuideModal.classList.remove('flex');
+    modalGuide.addEventListener('click', (e) => {
+      if (e.target === modalGuide) {
+        modalGuide.classList.add('hidden');
+        modalGuide.classList.remove('flex');
       }
     });
   }

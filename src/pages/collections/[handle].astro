@@ -2,6 +2,7 @@
 // src/pages/collections/[handle].astro
 import Layout from '../../layouts/Layout.astro';
 import ProductCard from '../../components/ui/ProductCard.astro';
+import BatikDivider from '../../components/ui/BatikDivider.astro';
 import { shopifyFetch, getCollectionQuery, getProductsQuery } from '../../lib/shopify';
 
 export async function getStaticPaths() {
@@ -144,96 +145,49 @@ if (!collection) {
 const isMahakarya = actualHandle?.includes('mahakarya');
 const isSignature = actualHandle?.includes('signature');
 
-// Theme Colors
-const themeBg = isMahakarya ? 'bg-[#121212]' : isSignature ? 'bg-[#0F172A]' : 'bg-[#FAF7F2]';
-const textColor = isMahakarya || isSignature ? 'text-[#FAF7F2]' : 'text-[#161616]';
-const accentColor = isMahakarya ? 'text-[#C5A059]' : isSignature ? 'text-[#93C5FD]' : 'text-[#9E4719]';
-const bannerImage = collection?.image?.url || "https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_shop_all_1786007684766.jpg?v=1786007711";
+const tierLabel = isMahakarya
+  ? 'Kasta Tertinggi • Sutra Prada'
+  : isSignature
+    ? 'Signature Series • Dobby & Primisima'
+    : 'Koleksi Batik Smile Nusantara';
 
-// Grid Layout Strategy
-const gridLayout = isMahakarya 
-  ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8'
-  : isSignature 
-    ? 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8'
-    : 'grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5 sm:gap-7';
+const bannerImage = collection?.image?.url || "https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_shop_all_1786007684766.jpg?v=1786007711";
 ---
 
-<Layout title={`${collection.title} | Batik Smile Nusantara`}>
-  <div class={`min-h-screen ${themeBg} ${textColor} transition-colors duration-500`}>
+<Layout title={`${collection.title} | Batik Smile Semarang`}>
+  <div class="min-h-screen bg-[#FAF7F2] text-[#121212]">
     
-    <!-- 1. HERO SECTION (Tier-Specific Rendering) -->
-    {isMahakarya ? (
-      // TIER 1: FULL BLEED PARALLAX HERO (Mahakarya)
-      <section class="relative w-full min-h-[55vh] lg:min-h-[65vh] flex items-center justify-center overflow-hidden bg-black">
-        <img 
-          src={bannerImage} 
-          alt={collection.title} 
-          class="absolute inset-0 w-full h-full object-cover opacity-50 scale-105" 
-        />
-        <div class="absolute inset-0 bg-gradient-to-t from-[#121212] via-black/40 to-black/70"></div>
-
-        <div class="relative z-10 text-center px-4 max-w-4xl mx-auto mt-8">
-          <span class="inline-block px-4 py-1.5 rounded-full bg-black/60 border border-[#C5A059]/40 text-[#C5A059] text-[10px] uppercase tracking-[0.25em] font-bold mb-3 shadow-lg">
-            Kasta Tertinggi • Sutra Prada
-          </span>
-          <h1 class="font-serif text-4xl sm:text-6xl lg:text-7xl font-normal text-white mb-3 tracking-tight">
-            {collection.title}
-          </h1>
-          <div class="font-sans text-xs sm:text-sm text-white/80 max-w-2xl mx-auto leading-relaxed font-light" set:html={collection.descriptionHtml} />
-        </div>
-      </section>
-    ) : isSignature ? (
-      // TIER 2: SPLIT SCREEN HERO (Signature Elegance)
-      <section class="w-full flex flex-col lg:flex-row min-h-[50vh] bg-[#0B1329] border-b border-white/10">
-        <div class="w-full lg:w-1/2 flex items-center justify-center p-8 sm:p-12 lg:p-16">
-          <div class="max-w-lg">
-            <span class="text-[#93C5FD] text-[10px] uppercase tracking-[0.25em] font-bold mb-2.5 block">
-              Signature Series • Dobby & Primisima
-            </span>
-            <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl mb-3 leading-tight font-normal">
-              {collection.title}
-            </h1>
-            <div class="font-sans text-xs sm:text-sm text-[#FAF7F2]/80 leading-relaxed font-light" set:html={collection.descriptionHtml} />
-          </div>
-        </div>
-        <div class="w-full lg:w-1/2 relative min-h-[250px] lg:min-h-[380px]">
-          <img src={bannerImage} alt={collection.title} class="absolute inset-0 w-full h-full object-cover opacity-85" />
-          <div class="absolute inset-0 bg-gradient-to-r from-[#0B1329] via-transparent to-transparent hidden lg:block"></div>
-        </div>
-      </section>
-    ) : (
-      // TIER 3 / DEFAULT: CENTERED CLEAN HERO (Essential & General)
-      <section class="w-full py-16 sm:py-20 flex items-center justify-center text-center bg-[#F2EDE4] border-b border-[#161616]/8 relative overflow-hidden">
-        <div class="max-w-3xl px-4 relative z-10">
-          <span class="text-[#9E4719] text-[10px] uppercase tracking-[0.25em] font-bold mb-2 block">
-            Koleksi Batik Smile Nusantara
-          </span>
-          <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl text-[#161616] mb-3 font-normal">
-            {collection.title}
-          </h1>
-          <div class="font-sans text-xs sm:text-sm text-[#161616]/75 max-w-xl mx-auto leading-relaxed font-light" set:html={collection.descriptionHtml} />
-        </div>
-      </section>
-    )}
+    <!-- 1. HERO HEADER (High Contrast & Clear Typography) -->
+    <section class="w-full py-12 sm:py-16 bg-[#F2EDE4] border-b border-neutral-200">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        
+        <span class="inline-block px-3.5 py-1 rounded-full bg-[#9E4719]/10 text-[#9E4719] text-xs uppercase tracking-wider font-bold mb-3 border border-[#9E4719]/20">
+          {tierLabel}
+        </span>
+        
+        <h1 class="font-serif text-3xl sm:text-5xl lg:text-6xl text-[#121212] font-semibold mb-3 tracking-tight">
+          {collection.title}
+        </h1>
+        
+        <BatikDivider variant="bronze" className="my-3" />
+        
+        <div class="font-sans text-xs sm:text-sm text-[#404040] max-w-2xl mx-auto leading-relaxed font-normal" set:html={collection.descriptionHtml} />
+        
+      </div>
+    </section>
 
     <!-- 2. STICKY FILTER & SORT BAR -->
-    <div class={`sticky top-18 lg:top-20 z-30 w-full py-3.5 border-b backdrop-blur-md transition-colors ${
-      isMahakarya 
-        ? 'bg-[#121212]/90 border-white/10' 
-        : isSignature 
-          ? 'bg-[#0F172A]/90 border-white/15' 
-          : 'bg-[#FAF7F2]/95 border-[#161616]/10'
-    }`}>
+    <div class="sticky top-16 lg:top-20 z-30 w-full py-3.5 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        <div class="flex items-center gap-3">
-          <span class={`text-xs uppercase tracking-wider font-semibold flex items-center gap-1.5 ${textColor}`}>
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <div class="flex items-center gap-2">
+          <span class="text-xs sm:text-sm font-sans font-bold text-[#121212] flex items-center gap-1.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
             </svg>
             Katalog Resmi
           </span>
         </div>
-        <span class={`font-sans text-xs uppercase tracking-wider opacity-70 ${textColor}`}>
+        <span class="font-sans text-xs sm:text-sm text-[#555555] font-semibold">
           {products.length} Karya Busana Tersedia
         </span>
       </div>
@@ -242,7 +196,7 @@ const gridLayout = isMahakarya
     <!-- 3. PRODUCT GRID -->
     <section class="py-12 sm:py-16">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class={gridLayout}>
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
           {products.map((product: any) => {
             const prodImg = product.images?.edges?.[0]?.node?.url || "https://cdn.shopify.com/s/files/1/0813/3224/0441/collections/banner_shop_all_1786007684766.jpg?v=1786007711";
             const minPrice = parseInt(product.priceRange?.minVariantPrice?.amount || "0");
@@ -270,14 +224,14 @@ const gridLayout = isMahakarya
 
         <!-- Load More / Shop All -->
         <div class="mt-16 text-center">
-          <a href="/collections/shop" class={`inline-block px-9 py-4 font-sans text-xs uppercase tracking-[0.22em] font-bold border transition-all duration-300 rounded ${
-            isMahakarya 
-              ? 'border-white/30 text-white hover:bg-[#9E4719] hover:border-[#9E4719]' 
-              : isSignature 
-                ? 'border-white/30 text-white hover:bg-white hover:text-[#0F172A]' 
-                : 'border-[#161616] text-[#161616] hover:bg-[#9E4719] hover:text-white hover:border-[#9E4719]'
-          }`}>
+          <a 
+            href="/collections/shop" 
+            class="inline-flex items-center justify-center px-9 py-4 font-sans text-xs uppercase tracking-wider font-bold border-2 border-[#121212] hover:border-[#9E4719] hover:bg-[#9E4719] hover:text-white text-[#121212] transition-all duration-300 rounded-xl shadow-sm"
+          >
             Jelajahi Seluruh Katalog
+            <svg class="ml-2.5 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
           </a>
         </div>
 
@@ -285,14 +239,14 @@ const gridLayout = isMahakarya
     </section>
 
     <!-- 4. BOTTOM SEO CONTENT BLOCK -->
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-14 border-t border-current/10 opacity-70">
-      <h3 class="font-serif text-xl sm:text-2xl mb-3 text-[#9E4719]">
-        Tentang Koleksi {collection.title} - Batik Smile Nusantara
+    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-neutral-200">
+      <h3 class="font-serif text-xl sm:text-2xl mb-3 text-[#9E4719] font-semibold">
+        Tentang Koleksi {collection.title} - Batik Smile Semarang
       </h3>
-      <p class="font-sans text-xs sm:text-sm leading-relaxed mb-3 font-light">
+      <p class="font-sans text-xs sm:text-sm text-[#404040] leading-relaxed mb-3 font-normal">
         Batik Smile didirikan di Semarang pada tahun 2007 untuk menghadirkan mahakarya busana batik berkualitas tinggi bagi seluruh keluarga Indonesia. Kami memadukan corak klasik Keraton Solo, Yogyakarta, dan Pesisiran Semarangan dengan rancangan kontemporer yang pas dikenakan untuk berbagai agenda formal maupun kasual.
       </p>
-      <p class="font-sans text-xs sm:text-sm leading-relaxed font-light">
+      <p class="font-sans text-xs sm:text-sm text-[#404040] leading-relaxed font-normal">
         Setiap produk dalam kategori <strong>{collection.title}</strong> diproduksi dengan pengawasan ketat, menggunakan kain pilihan yang adem, nyaman di kulit, dan dilengkapi furing halus untuk menjaga kenyamanan sepanjang hari. Kami juga melayani jahit kustom seragam keluarga tanpa minimal order dengan layanan pelanggan 3S 1C 1T 1H.
       </p>
     </section>
