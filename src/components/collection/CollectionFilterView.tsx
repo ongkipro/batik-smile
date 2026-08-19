@@ -32,15 +32,31 @@ interface Props {
   initialProducts: ProductItem[];
   collectionTitle: string;
   collectionHandle: string;
+  theme?: 'mahakarya' | 'signature' | 'essential' | 'default';
 }
 
-export default function CollectionFilterView({ initialProducts, collectionTitle, collectionHandle }: Props) {
-  const defaultTier = collectionHandle.includes('mahakarya')
-    ? 'mahakarya'
-    : collectionHandle.includes('signature')
-      ? 'signature'
-      : collectionHandle.includes('essential')
-        ? 'essential'
+export default function CollectionFilterView({
+  initialProducts,
+  collectionTitle,
+  collectionHandle,
+  theme = 'default'
+}: Props) {
+  const detectedTheme = theme !== 'default' 
+    ? theme 
+    : collectionHandle.includes('mahakarya') 
+      ? 'mahakarya' 
+      : collectionHandle.includes('signature') 
+        ? 'signature' 
+        : collectionHandle.includes('essential') 
+          ? 'essential' 
+          : 'default';
+
+  const defaultTier = detectedTheme === 'mahakarya' 
+    ? 'mahakarya' 
+    : detectedTheme === 'signature' 
+      ? 'signature' 
+      : detectedTheme === 'essential' 
+        ? 'essential' 
         : 'all';
 
   const [selectedTier, setSelectedTier] = useState<string>(defaultTier);
@@ -126,39 +142,93 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
     setSortBy('featured');
   };
 
+  // Theme-specific UI Tokens
+  const isMahakaryaTheme = detectedTheme === 'mahakarya';
+  const isSignatureTheme = detectedTheme === 'signature';
+  const isEssentialTheme = detectedTheme === 'essential';
+
+  const styles = isMahakaryaTheme
+    ? {
+        bodyBg: 'bg-[#0D0D0D] text-[#FAF7F2]',
+        filterBarBg: 'bg-[#141414]/95 border-[#C5A059]/30 text-white',
+        pillDefault: 'bg-[#1C1C1C] text-amber-200/90 border-[#C5A059]/30 hover:border-[#C5A059] hover:bg-[#2A261C]',
+        pillActive: 'bg-gradient-to-r from-[#C5A059] to-[#9A7730] text-[#0A0907] border-[#C5A059] shadow-lg font-extrabold',
+        searchBg: 'bg-[#1E1E1E] text-white border-[#C5A059]/30 focus:border-[#C5A059] placeholder-amber-200/40',
+        selectBg: 'bg-[#1E1E1E] text-[#FAF7F2] border-[#C5A059]/30 hover:border-[#C5A059]',
+        cardBg: 'bg-[#161616] border-[#C5A059]/30 hover:border-[#C5A059] hover:shadow-[0_0_30px_rgba(197,160,89,0.22)]',
+        cardTitle: 'text-white font-serif group-hover:text-[#E0C58A]',
+        cardMaterial: 'text-[#C5A059]',
+        cardPrice: 'text-[#E0C58A]',
+        cardPriceBorder: 'border-[#C5A059]/20',
+        hoverBtn: 'bg-gradient-to-r from-[#C5A059] to-[#9A7730] text-[#0A0907]',
+        countColor: 'text-amber-200/80',
+        activeBadgeBg: 'bg-[#1E1E1E] border-[#C5A059]/40 text-amber-200'
+      }
+    : isSignatureTheme
+      ? {
+          bodyBg: 'bg-[#060D1A] text-white',
+          filterBarBg: 'bg-[#0A162B]/95 border-blue-500/30 text-white',
+          pillDefault: 'bg-[#0E1F3B] text-blue-200/90 border-blue-400/30 hover:border-blue-400 hover:bg-[#152B52]',
+          pillActive: 'bg-[#1E3A8A] text-white border-blue-400 shadow-lg font-extrabold',
+          searchBg: 'bg-[#0E1F3B] text-white border-blue-400/30 focus:border-blue-400 placeholder-blue-300/40',
+          selectBg: 'bg-[#0E1F3B] text-white border-blue-400/30 hover:border-blue-400',
+          cardBg: 'bg-[#0B1528] border-blue-500/30 hover:border-blue-400 hover:shadow-[0_0_30px_rgba(30,58,138,0.35)]',
+          cardTitle: 'text-white font-sans group-hover:text-blue-300',
+          cardMaterial: 'text-blue-300',
+          cardPrice: 'text-white',
+          cardPriceBorder: 'border-blue-500/20',
+          hoverBtn: 'bg-[#1E3A8A] text-white',
+          countColor: 'text-blue-200/80',
+          activeBadgeBg: 'bg-[#0E1F3B] border-blue-400/40 text-blue-200'
+        }
+      : {
+          bodyBg: 'bg-[#FAF7F2] text-[#121212]',
+          filterBarBg: 'bg-white/95 border-neutral-200 text-[#121212]',
+          pillDefault: 'bg-white text-[#121212] border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50',
+          pillActive: 'bg-[#9E4719] text-white border-[#9E4719] shadow-sm font-extrabold',
+          searchBg: 'bg-neutral-100 text-[#121212] border-neutral-200 focus:border-[#9E4719] placeholder-neutral-400',
+          selectBg: 'bg-white text-[#121212] border-neutral-200 hover:border-neutral-400',
+          cardBg: 'bg-white border-[#161616]/10 hover:border-[#9E4719]/40 hover:shadow-md',
+          cardTitle: 'text-[#121212] font-sans group-hover:text-[#9E4719]',
+          cardMaterial: 'text-[#9E4719]',
+          cardPrice: 'text-[#9E4719]',
+          cardPriceBorder: 'border-neutral-100',
+          hoverBtn: 'bg-[#9E4719] text-white',
+          countColor: 'text-neutral-600',
+          activeBadgeBg: 'bg-neutral-100 border-neutral-300 text-[#121212]'
+        };
+
   return (
-    <div>
+    <div className={styles.bodyBg}>
       
-      {/* FILTER & SORT CONTROLS BAR (Shadcn-Inspired Clean UI) */}
-      <div className="sticky top-16 lg:top-20 z-30 w-full py-3.5 bg-white/95 backdrop-blur-md border-b border-neutral-200 shadow-sm transition-all">
+      {/* FILTER & SORT CONTROLS BAR */}
+      <div className={`sticky top-16 lg:top-20 z-30 w-full py-3.5 backdrop-blur-md border-b shadow-sm transition-all ${styles.filterBarBg}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             
-            {/* Left: Quick Tier Pills (Desktop & Mobile Scroll) */}
+            {/* Left: Quick Tier Pills */}
             <div className="flex items-center gap-2 overflow-x-auto scrollbar-none pb-1 md:pb-0">
-              <span className="text-xs uppercase tracking-wider font-bold text-neutral-500 mr-1 hidden sm:inline-block">
+              <span className={`text-xs uppercase tracking-wider font-bold mr-1 hidden sm:inline-block ${isMahakaryaTheme ? 'text-amber-400' : isSignatureTheme ? 'text-blue-300' : 'text-neutral-500'}`}>
                 Kasta:
               </span>
 
               {[
                 { id: 'all', label: 'Semua Kasta' },
-                { id: 'mahakarya', label: 'Tier 1: Mahakarya', color: 'border-[#C5A059]' },
-                { id: 'signature', label: 'Tier 2: Signature', color: 'border-blue-700' },
-                { id: 'essential', label: 'Tier 3: Essential', color: 'border-[#9E4719]' }
+                { id: 'mahakarya', label: 'Tier 1: Mahakarya', dot: 'bg-[#C5A059]' },
+                { id: 'signature', label: 'Tier 2: Signature', dot: 'bg-blue-600' },
+                { id: 'essential', label: 'Tier 3: Essential', dot: 'bg-[#9E4719]' }
               ].map((tier) => (
                 <button
                   key={tier.id}
                   onClick={() => setSelectedTier(tier.id)}
-                  className={`h-9 px-3.5 rounded-full font-sans text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer border ${
+                  className={`h-9 px-3.5 rounded-full font-sans text-xs whitespace-nowrap transition-all flex items-center gap-1.5 cursor-pointer border ${
                     selectedTier === tier.id
-                      ? 'bg-[#9E4719] text-white border-[#9E4719] shadow-sm'
-                      : 'bg-white text-[#121212] border-neutral-200 hover:border-neutral-400 hover:bg-neutral-50'
+                      ? styles.pillActive
+                      : styles.pillDefault
                   }`}
                 >
-                  {tier.id === 'mahakarya' && <span className="w-2 h-2 rounded-full bg-[#C5A059]" />}
-                  {tier.id === 'signature' && <span className="w-2 h-2 rounded-full bg-blue-600" />}
-                  {tier.id === 'essential' && <span className="w-2 h-2 rounded-full bg-[#9E4719]" />}
+                  {tier.dot && <span className={`w-2 h-2 rounded-full ${tier.dot}`} />}
                   <span>{tier.label}</span>
                 </button>
               ))}
@@ -167,20 +237,20 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
             {/* Right: Search, Filter Trigger, Sort Select */}
             <div className="flex items-center gap-2.5 justify-between md:justify-end">
               
-              {/* Live Search inside Collection */}
+              {/* Live Search */}
               <div className="relative w-44 sm:w-56">
                 <input
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Cari dalam koleksi..."
-                  className="w-full h-9 pl-8 pr-3 bg-neutral-100 hover:bg-neutral-50 focus:bg-white border border-neutral-200 focus:border-[#9E4719] rounded-xl text-xs font-sans text-[#121212] outline-none transition-all"
+                  className={`w-full h-9 pl-8 pr-3 rounded-xl text-xs font-sans outline-none transition-all border ${styles.searchBg}`}
                 />
-                <svg className="w-3.5 h-3.5 text-neutral-500 absolute left-2.5 top-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="w-3.5 h-3.5 absolute left-2.5 top-3 opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
                 </svg>
                 {searchQuery && (
-                  <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-2 text-xs font-bold text-neutral-400 hover:text-neutral-700">
+                  <button onClick={() => setSearchQuery('')} className="absolute right-2.5 top-2 text-xs font-bold opacity-60 hover:opacity-100">
                     ✕
                   </button>
                 )}
@@ -191,8 +261,8 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
                 onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
                 className={`h-9 px-3.5 rounded-xl font-sans text-xs font-bold border flex items-center gap-1.5 cursor-pointer transition-colors ${
                   activeFilterCount > 0
-                    ? 'bg-[#9E4719] text-white border-[#9E4719]'
-                    : 'bg-white text-[#121212] border-neutral-200 hover:border-neutral-400'
+                    ? styles.pillActive
+                    : styles.pillDefault
                 }`}
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -200,25 +270,25 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
                 </svg>
                 <span>Filter</span>
                 {activeFilterCount > 0 && (
-                  <span className="w-4 h-4 rounded-full bg-white text-[#9E4719] text-[10px] font-extrabold flex items-center justify-center">
+                  <span className="w-4 h-4 rounded-full bg-white text-black text-[10px] font-extrabold flex items-center justify-center">
                     {activeFilterCount}
                   </span>
                 )}
               </button>
 
-              {/* Shadcn-Styled Sort Select */}
+              {/* Sort Select */}
               <div className="relative">
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="h-9 pl-3 pr-8 bg-white border border-neutral-200 hover:border-neutral-400 rounded-xl text-xs font-sans font-bold text-[#121212] outline-none cursor-pointer appearance-none transition-colors"
+                  className={`h-9 pl-3 pr-8 rounded-xl text-xs font-sans font-bold outline-none cursor-pointer appearance-none transition-colors border ${styles.selectBg}`}
                 >
-                  <option value="featured">Rekomendasi</option>
-                  <option value="price-asc">Harga: Termurah</option>
-                  <option value="price-desc">Harga: Tertinggi</option>
-                  <option value="title-asc">Nama: A - Z</option>
+                  <option value="featured" className="bg-[#1E1E1E] text-white">Rekomendasi</option>
+                  <option value="price-asc" className="bg-[#1E1E1E] text-white">Harga: Termurah</option>
+                  <option value="price-desc" className="bg-[#1E1E1E] text-white">Harga: Tertinggi</option>
+                  <option value="title-asc" className="bg-[#1E1E1E] text-white">Nama: A - Z</option>
                 </select>
-                <svg className="w-3.5 h-3.5 text-neutral-500 absolute right-2.5 top-3 pointer-events-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <svg className="w-3.5 h-3.5 absolute right-2.5 top-3 pointer-events-none opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="m6 9 6 6 6-6" />
                 </svg>
               </div>
@@ -227,13 +297,13 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
 
           </div>
 
-          {/* Secondary Filter Dropdown Drawer (Collapsible) */}
+          {/* Secondary Filter Dropdown Drawer */}
           {isMobileFilterOpen && (
-            <div className="mt-3 pt-3 border-t border-neutral-200 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in">
+            <div className="mt-3 pt-3 border-t border-white/15 grid grid-cols-1 sm:grid-cols-3 gap-3 animate-fade-in">
               
               {/* Category Filter */}
               <div>
-                <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 block mb-1">
+                <label className="text-[11px] font-bold uppercase tracking-wider opacity-75 block mb-1">
                   Kategori Busana
                 </label>
                 <div className="flex flex-wrap gap-1.5">
@@ -249,8 +319,8 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
                       onClick={() => setSelectedCategory(cat.id)}
                       className={`px-2.5 py-1 rounded-lg text-xs font-medium cursor-pointer border ${
                         selectedCategory === cat.id
-                          ? 'bg-[#9E4719] text-white border-[#9E4719] font-bold'
-                          : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50'
+                          ? styles.pillActive
+                          : styles.pillDefault
                       }`}
                     >
                       {cat.label}
@@ -261,7 +331,7 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
 
               {/* Price Range Filter */}
               <div>
-                <label className="text-[11px] font-bold uppercase tracking-wider text-neutral-500 block mb-1">
+                <label className="text-[11px] font-bold uppercase tracking-wider opacity-75 block mb-1">
                   Rentang Harga
                 </label>
                 <div className="flex flex-wrap gap-1.5">
@@ -276,8 +346,8 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
                       onClick={() => setSelectedPriceRange(price.id)}
                       className={`px-2.5 py-1 rounded-lg text-xs font-medium cursor-pointer border ${
                         selectedPriceRange === price.id
-                          ? 'bg-[#9E4719] text-white border-[#9E4719] font-bold'
-                          : 'bg-white text-neutral-700 border-neutral-200 hover:bg-neutral-50'
+                          ? styles.pillActive
+                          : styles.pillDefault
                       }`}
                     >
                       {price.label}
@@ -290,7 +360,7 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
               <div className="flex flex-col justify-end items-start sm:items-end">
                 <button
                   onClick={resetAllFilters}
-                  className="px-4 py-2 text-xs font-bold text-red-700 hover:text-red-900 underline cursor-pointer"
+                  className="px-4 py-2 text-xs font-bold text-red-400 hover:text-red-300 underline cursor-pointer"
                 >
                   Reset Semua Filter ({activeFilterCount})
                 </button>
@@ -302,39 +372,39 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
           {/* Active Filter Badges */}
           {activeFilterCount > 0 && (
             <div className="mt-2.5 flex items-center gap-2 flex-wrap">
-              <span className="text-xs text-neutral-500 font-medium">Filter Aktif:</span>
+              <span className="text-xs opacity-75 font-medium">Filter Aktif:</span>
 
               {selectedTier !== 'all' && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-neutral-100 border border-neutral-300 text-xs font-bold text-[#121212]">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border ${styles.activeBadgeBg}`}>
                   Kasta: {selectedTier.toUpperCase()}
-                  <button onClick={() => setSelectedTier('all')} className="text-neutral-400 hover:text-black">✕</button>
+                  <button onClick={() => setSelectedTier('all')} className="opacity-60 hover:opacity-100">✕</button>
                 </span>
               )}
 
               {selectedCategory !== 'all' && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-neutral-100 border border-neutral-300 text-xs font-bold text-[#121212]">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border ${styles.activeBadgeBg}`}>
                   Kategori: {selectedCategory.toUpperCase()}
-                  <button onClick={() => setSelectedCategory('all')} className="text-neutral-400 hover:text-black">✕</button>
+                  <button onClick={() => setSelectedCategory('all')} className="opacity-60 hover:opacity-100">✕</button>
                 </span>
               )}
 
               {selectedPriceRange !== 'all' && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-neutral-100 border border-neutral-300 text-xs font-bold text-[#121212]">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border ${styles.activeBadgeBg}`}>
                   Harga: {selectedPriceRange}
-                  <button onClick={() => setSelectedPriceRange('all')} className="text-neutral-400 hover:text-black">✕</button>
+                  <button onClick={() => setSelectedPriceRange('all')} className="opacity-60 hover:opacity-100">✕</button>
                 </span>
               )}
 
               {searchQuery && (
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-neutral-100 border border-neutral-300 text-xs font-bold text-[#121212]">
+                <span className={`inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold border ${styles.activeBadgeBg}`}>
                   Kata Kunci: "{searchQuery}"
-                  <button onClick={() => setSearchQuery('')} className="text-neutral-400 hover:text-black">✕</button>
+                  <button onClick={() => setSearchQuery('')} className="opacity-60 hover:opacity-100">✕</button>
                 </span>
               )}
 
               <button
                 onClick={resetAllFilters}
-                className="text-xs font-bold text-[#9E4719] hover:underline ml-1"
+                className="text-xs font-bold text-amber-400 hover:underline ml-1"
               >
                 Hapus Semua
               </button>
@@ -345,29 +415,29 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
       </div>
 
       {/* RESULT COUNT */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex justify-between items-center text-xs sm:text-sm text-neutral-600">
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex justify-between items-center text-xs sm:text-sm ${styles.countColor}`}>
         <span className="font-medium">
           Menampilkan <strong>{filteredProducts.length}</strong> karya busana
           {filteredProducts.length !== initialProducts.length && ` (dari total ${initialProducts.length} produk)`}
         </span>
       </div>
 
-      {/* PRODUCT GRID */}
+      {/* THEMED PRODUCT GRID */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
         {filteredProducts.length === 0 ? (
           <div className="py-20 text-center max-w-md mx-auto">
-            <div className="w-16 h-16 rounded-full bg-neutral-100 text-neutral-400 flex items-center justify-center mx-auto mb-4">
+            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4 opacity-50">
               <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" />
               </svg>
             </div>
-            <h3 className="font-serif text-2xl text-[#121212] font-semibold mb-2">Tidak Ada Produk Sesuai Filter</h3>
-            <p className="font-sans text-xs sm:text-sm text-neutral-500 mb-6">
+            <h3 className="font-serif text-2xl font-semibold mb-2">Tidak Ada Produk Sesuai Filter</h3>
+            <p className="font-sans text-xs sm:text-sm opacity-70 mb-6">
               Silakan atur ulang kriteria kasta, kategori, atau rentang harga untuk melihat koleksi lainnya.
             </p>
             <button
               onClick={resetAllFilters}
-              className="px-6 py-3 bg-[#9E4719] hover:bg-[#7A320C] text-white font-sans text-xs uppercase tracking-wider font-bold rounded-xl shadow-md transition-all cursor-pointer"
+              className={`px-6 py-3 font-sans text-xs uppercase tracking-wider font-bold rounded-xl shadow-md transition-all cursor-pointer ${styles.pillActive}`}
             >
               Reset Semua Filter
             </button>
@@ -383,7 +453,7 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
               const material = getMaterialLabel(product);
 
               const tierBadge = tier === 'mahakarya'
-                ? { label: 'Mahakarya', bg: 'bg-[#C5A059]', text: 'text-[#121212]' }
+                ? { label: 'Mahakarya', bg: 'bg-gradient-to-r from-[#C5A059] to-[#9A7730]', text: 'text-[#0A0907]' }
                 : tier === 'signature'
                   ? { label: 'Signature', bg: 'bg-[#1E3A8A]', text: 'text-white' }
                   : { label: 'Essential', bg: 'bg-[#9E4719]', text: 'text-white' };
@@ -392,18 +462,18 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
                 <a
                   key={product.id}
                   href={`/products/${product.handle}`}
-                  className="group block bg-white rounded-2xl border border-[#161616]/10 p-3 sm:p-3.5 shadow-sm hover:shadow-md hover:border-[#9E4719]/40 transition-all duration-300"
+                  className={`group block rounded-2xl p-3 sm:p-3.5 shadow-sm transition-all duration-300 border ${styles.cardBg}`}
                 >
                   {/* Image Container */}
-                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-neutral-100 mb-3 rounded-xl border border-neutral-100">
+                  <div className="relative w-full aspect-[4/5] overflow-hidden bg-black/20 mb-3 rounded-xl border border-white/10">
                     
                     {/* Tier / Discount Badge */}
                     <div className="absolute top-2.5 left-2.5 z-10 flex flex-col gap-1">
-                      <span className={`${tierBadge.bg} ${tierBadge.text} text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded shadow-sm`}>
+                      <span className={`${tierBadge.bg} ${tierBadge.text} text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded shadow-sm`}>
                         {tierBadge.label}
                       </span>
                       {hasDiscount && (
-                        <span className="bg-[#9E4719] text-white text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded shadow-sm">
+                        <span className="bg-red-700 text-white text-[10px] uppercase tracking-wider font-bold px-2 py-0.5 rounded shadow-sm">
                           Diskon
                         </span>
                       )}
@@ -418,7 +488,7 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
 
                     {/* Quick View Overlay */}
                     <div className="absolute bottom-0 left-0 w-full p-2.5 translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 hidden lg:block">
-                      <span className="block w-full text-center bg-white/95 backdrop-blur text-[#121212] text-xs uppercase tracking-wider font-bold py-2 shadow-md hover:bg-[#9E4719] hover:text-white transition-colors rounded-lg">
+                      <span className={`block w-full text-center py-2 shadow-md text-xs uppercase tracking-wider font-bold transition-all rounded-lg ${styles.hoverBtn}`}>
                         Lihat Detail Produk
                       </span>
                     </div>
@@ -426,20 +496,20 @@ export default function CollectionFilterView({ initialProducts, collectionTitle,
 
                   {/* Product Details */}
                   <div className="flex flex-col text-left px-1">
-                    <span className="font-sans text-[11px] uppercase tracking-wider text-[#9E4719] font-bold mb-1 block">
+                    <span className={`font-sans text-[11px] uppercase tracking-wider font-bold mb-1 block ${styles.cardMaterial}`}>
                       {material}
                     </span>
 
-                    <h3 className="font-sans text-[13px] sm:text-[14px] font-bold text-[#121212] group-hover:text-[#9E4719] transition-colors leading-[1.35] line-clamp-2 min-h-[2.7em] mb-2">
+                    <h3 className={`font-bold transition-colors leading-[1.35] line-clamp-2 min-h-[2.7em] mb-2 text-[13px] sm:text-[14px] ${styles.cardTitle}`}>
                       {product.title}
                     </h3>
 
-                    <div className="flex items-baseline gap-2 mt-auto pt-1 border-t border-neutral-100">
-                      <p className="font-sans text-sm sm:text-base font-extrabold text-[#9E4719] tracking-tight">
+                    <div className={`flex items-baseline gap-2 mt-auto pt-1.5 border-t ${styles.cardPriceBorder}`}>
+                      <p className={`font-sans text-sm sm:text-base font-extrabold tracking-tight ${styles.cardPrice}`}>
                         Rp {minPrice.toLocaleString('id-ID')}
                       </p>
                       {hasDiscount && (
-                        <span className="font-sans text-xs line-through text-neutral-400 font-normal">
+                        <span className="font-sans text-xs line-through opacity-50 font-normal">
                           Rp {comparePrice.toLocaleString('id-ID')}
                         </span>
                       )}

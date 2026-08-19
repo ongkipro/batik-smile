@@ -215,10 +215,27 @@ const themeConfig = isMahakarya
             'Pelayanan Prima 3S 1C 1T 1H'
           ]
         };
+const pageBgClass = isMahakarya
+  ? 'bg-[#0D0D0D] text-[#FAF7F2]'
+  : isSignature
+    ? 'bg-[#060D1A] text-white'
+    : 'bg-[#FAF7F2] text-[#121212]';
+
+const ctaBtnClass = isMahakarya
+  ? 'border-2 border-[#C5A059] bg-[#161616] text-[#E0C58A] hover:bg-[#C5A059] hover:text-[#0A0907]'
+  : isSignature
+    ? 'border-2 border-blue-400 bg-[#0B1528] text-white hover:bg-[#1E3A8A]'
+    : 'border-2 border-[#121212] hover:border-[#9E4719] hover:bg-[#9E4719] hover:text-white text-[#121212]';
+
+const seoBorderClass = isMahakarya
+  ? 'border-t border-[#C5A059]/30 text-amber-100/80'
+  : isSignature
+    ? 'border-t border-blue-500/30 text-blue-100/80'
+    : 'border-t border-neutral-200 text-[#404040]';
 ---
 
 <Layout title={`${collection.title} | Batik Smile Semarang`}>
-  <div class="min-h-screen bg-[#FAF7F2] text-[#121212]">
+  <div class={`min-h-screen ${pageBgClass}`}>
     
     <!-- 1. HERO HEADER WITH DISTINCT THEME PER KASTA -->
     <section class={`relative w-full py-14 sm:py-20 ${themeConfig.heroBg} overflow-hidden`}>
@@ -267,19 +284,20 @@ const themeConfig = isMahakarya
       </div>
     </section>
 
-    <!-- 2. REACTIVE COLLECTION FILTER & PRODUCT GRID (Shadcn-Inspired UI) -->
+    <!-- 2. REACTIVE COLLECTION FILTER & PRODUCT GRID (Bespoke UI Theme) -->
     <CollectionFilterView 
       client:load 
       initialProducts={products} 
       collectionTitle={collection.title} 
       collectionHandle={actualHandle} 
+      theme={themeConfig.theme}
     />
 
     <!-- 3. BOTTOM CTA / SHOP ALL -->
     <div class="pb-16 text-center">
       <a 
         href="/collections/shop" 
-        class="inline-flex items-center justify-center px-9 py-4 font-sans text-xs uppercase tracking-wider font-bold border-2 border-[#121212] hover:border-[#9E4719] hover:bg-[#9E4719] hover:text-white text-[#121212] transition-all duration-300 rounded-xl shadow-sm cursor-pointer"
+        class={`inline-flex items-center justify-center px-9 py-4 font-sans text-xs uppercase tracking-wider font-bold transition-all duration-300 rounded-xl shadow-sm cursor-pointer ${ctaBtnClass}`}
       >
         Jelajahi Seluruh Katalog
         <svg class="ml-2.5 w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -289,14 +307,14 @@ const themeConfig = isMahakarya
     </div>
 
     <!-- 4. BOTTOM SEO CONTENT BLOCK -->
-    <section class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 border-t border-neutral-200">
-      <h3 class="font-serif text-xl sm:text-2xl mb-3 text-[#9E4719] font-semibold">
+    <section class={`max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ${seoBorderClass}`}>
+      <h3 class={`font-serif text-xl sm:text-2xl mb-3 font-semibold ${isMahakarya ? 'text-[#C5A059]' : isSignature ? 'text-blue-300' : 'text-[#9E4719]'}`}>
         Tentang Koleksi {collection.title} - Batik Smile Semarang
       </h3>
-      <p class="font-sans text-xs sm:text-sm text-[#404040] leading-relaxed mb-3 font-normal">
+      <p class="font-sans text-xs sm:text-sm leading-relaxed mb-3 font-normal opacity-85">
         Batik Smile didirikan di Semarang pada tahun 2007 untuk menghadirkan mahakarya busana batik berkualitas tinggi bagi seluruh keluarga Indonesia. Kami memadukan corak klasik Keraton Solo, Yogyakarta, dan Pesisiran Semarangan dengan rancangan kontemporer yang pas dikenakan untuk berbagai agenda formal maupun kasual.
       </p>
-      <p class="font-sans text-xs sm:text-sm text-[#404040] leading-relaxed font-normal">
+      <p class="font-sans text-xs sm:text-sm leading-relaxed font-normal opacity-85">
         Setiap produk dalam kategori <strong>{collection.title}</strong> diproduksi dengan pengawasan ketat, menggunakan kain pilihan yang adem, nyaman di kulit, dan dilengkapi furing halus untuk menjaga kenyamanan sepanjang hari. Kami juga melayani jahit kustom seragam keluarga tanpa minimal order dengan layanan pelanggan 3S 1C 1T 1H.
       </p>
     </section>
