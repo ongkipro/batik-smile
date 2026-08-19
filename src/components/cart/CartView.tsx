@@ -89,11 +89,6 @@ export default function CartView() {
   const rawSubtotal = cartState.cost?.subtotalAmount?.amount ? parseInt(cartState.cost.subtotalAmount.amount) : 0;
   const subtotalStr = rawSubtotal.toLocaleString('id-ID');
 
-  // Free shipping calculation (Bebas ongkir di atas Rp 500.000)
-  const freeShippingThreshold = 500000;
-  const remainingForFreeShipping = Math.max(0, freeShippingThreshold - rawSubtotal);
-  const progressPercent = Math.min(100, Math.round((rawSubtotal / freeShippingThreshold) * 100));
-
   // Show loading spinner if actively fetching and no items yet
   if (cartState.isLoading && lines.length === 0) {
     return (
@@ -136,26 +131,6 @@ export default function CartView() {
       
       {/* Kolom Kiri: Daftar Produk di Tas Belanja (7/12) */}
       <div className="lg:col-span-7 space-y-6">
-        
-        {/* Free Shipping Progress Indicator */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-white border border-neutral-200 shadow-sm space-y-2.5">
-          <div className="flex justify-between items-center text-xs sm:text-sm">
-            <span className="font-medium text-[#121212]">
-              {remainingForFreeShipping > 0 ? (
-                <>Tambah <strong className="text-[#9E4719]">Rp {remainingForFreeShipping.toLocaleString('id-ID')}</strong> lagi untuk <strong>Bebas Ongkir</strong></>
-              ) : (
-                <span className="text-emerald-700 font-bold">🎉 Selamat! Pesanan Anda Mendapatkan Bebas Ongkir</span>
-              )}
-            </span>
-            <span className="text-xs font-mono font-bold text-neutral-500">{progressPercent}%</span>
-          </div>
-          <div className="w-full bg-neutral-100 rounded-full h-2.5 overflow-hidden">
-            <div 
-              className="bg-[#9E4719] h-full rounded-full transition-all duration-500" 
-              style={{ width: `${progressPercent}%` }}
-            />
-          </div>
-        </div>
 
         <div className="flex items-center justify-between pb-3 border-b border-neutral-200">
           <span className="font-serif text-xl sm:text-2xl text-[#121212] font-semibold">
@@ -287,10 +262,8 @@ export default function CartView() {
               <span className="text-emerald-700 font-bold">Sudah Termasuk (Gratis)</span>
             </div>
             <div className="flex justify-between text-[#333333]">
-              <span>Estimasi Ongkos Kirim</span>
-              <span className="text-emerald-700 font-bold">
-                {rawSubtotal >= freeShippingThreshold ? 'Gratis (Bebas Ongkir)' : 'Dihitung saat Checkout'}
-              </span>
+              <span>Ongkos Kirim</span>
+              <span className="text-neutral-600 font-medium">Dihitung saat Checkout Resmi</span>
             </div>
           </div>
 
